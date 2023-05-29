@@ -15,8 +15,9 @@ const server = http.createServer(app);
 
 server.on("listening", () => {
   const address = server.address();
-  const bind = typeof address === "string" ? "pipe " + address : "port " + port;
-  console.log("Listening on " + bind + "\n ➜ Local: http://localhost:" + port);
+  const bind: string =
+    typeof address === "string" ? "pipe " + address : "port " + port;
+  console.log(`Listening on ${bind} \n ➜ Local: http://localhost:${port} 🚀`);
 });
 
 server.listen(port);
