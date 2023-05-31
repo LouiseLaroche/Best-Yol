@@ -8,7 +8,8 @@
         "trailingComma": "es5",
         "tabWidth": 4,
         "semi": false,
-        "singleQuote": false
+        "singleQuote": false,
+        "printWidth": 150
     },
     "description": "",
     "main": "dist/server.js",
