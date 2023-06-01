@@ -430,50 +430,32 @@ async function main() {
         },
     })
 
-    console.log(
-        {
-            hydrationControl,
-            chef,
-            bodybuilder,
-            bookworm,
-            meditationPro,
-            curiousScholar,
-            closeToNature,
-            perfectFriend,
-            stretchinator,
-            broomMaster,
-            relaxationGuru,
-            virtuoso,
-            absolutePitch,
-            questMaster,
-            selfRuling,
-            perfectionist,
-            buddingBond,
-            growingComplicity,
-            faithfulCompanion,
-            unshakableFriendship,
-            eternalFriendship,
-            hatching,
-            miniYol,
-            greatYol,
+    const grumpfish = await prisma.species.upsert({
+        where: { name: "Grumpfish" },
+        update: {},
+        create: {
+            name: "Grumpfish",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
         },
-        {
-            water,
-            healthyCooking,
-            physicalActivity,
-            readSomePages,
-            meditate,
-            learnSomethingNew,
-            walkOutside,
-            stayInTouch,
-            cookSomethingNew,
-            stretchYourself,
-            cleanTheHouse,
-            treatYourself,
-            doSomethingCreative,
-            musicListening,
-        }
-    )
+    })
+
+    const bumbleblink = await prisma.species.upsert({
+        where: { name: "Bumbleblink" },
+        update: {},
+        create: {
+            name: "Bumbleblink",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/Dd89OgjoR9ew6T1kK_M-qg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+        },
+    })
+
+    const greenbelly = await prisma.species.upsert({
+        where: { name: "Greenbelly" },
+        update: {},
+        create: {
+            name: "Greenbelly",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/MkOpsV0LQ9O4lktVdp5uVA?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+        },
+    })
 }
 
 main()
