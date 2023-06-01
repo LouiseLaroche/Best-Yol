@@ -10,10 +10,72 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  pp      String
-  banner  String
-  email   String   @unique
-  name    String
+model Users {
+  id          Int      @id @default(autoincrement())
+  pp          String?
+  banner      String?
+  email       String   @unique
+  name        String
+  password    String
+  Yol         Yol[]
+  UserSuccess UserSuccess[]
+  UserTasks   UserTasks[]
+}
+
+model Yol {
+  id        Int      @id @default(autoincrement())
+  name      String
+  xp        Int
+  user      Users    @relation(fields: [userId], references: [id])
+  userId    Int
+  species   Species  @relation(fields: [speciesId], references: [id])
+  speciesId Int
+}
+
+model Species {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  image     String
+  Yol       Yol[]
+}
+
+model Success {
+  id           Int      @id @default(autoincrement())
+  title        String   @unique
+  image        String?
+  description  String
+  amountNeeded Int
+  successXp    Int
+  UserSuccess  UserSuccess[]
+}
+
+model UserSuccess {
+  id           Int      @id @default(autoincrement())
+  actualAmount Int
+  isCompleted  Boolean
+  user         Users    @relation(fields: [userId], references: [id])
+  userId       Int
+  success      Success  @relation(fields: [successId], references: [id])
+  successId    Int
+}
+
+model DailyTasks {
+  id          Int     @id @default(autoincrement())
+  category    String?
+  title       String  @unique
+  difficulty  Int
+  xp          Int
+  isActive    Boolean?
+  userTasks   UserTasks[]
+}
+
+model UserTasks {
+  id           Int            @id @default(autoincrement())
+  title        String
+  isDaily      Boolean
+  isCompleted  Boolean
+  completedAt  DateTime
+  dailyTasks   DailyTasks[]
+  user         Users          @relation(fields: [userId], references: [id])
+  userId       Int
 }
