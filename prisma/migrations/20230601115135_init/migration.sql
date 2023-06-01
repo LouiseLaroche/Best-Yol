@@ -34,6 +34,7 @@ CREATE TABLE "Species" (
 CREATE TABLE "Success" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
+    "image" TEXT,
     "description" TEXT NOT NULL,
     "amountNeeded" INTEGER NOT NULL,
     "successXp" INTEGER NOT NULL,
@@ -84,6 +85,9 @@ CREATE TABLE "_DailyTasksToUserTasks" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Users_email_key" ON "Users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Species_name_key" ON "Species"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Success_title_key" ON "Success"("title");
