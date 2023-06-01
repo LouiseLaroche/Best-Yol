@@ -1,7 +1,5 @@
-// species - dailytasks - success
-
-import { PrismaClient } from "@prisma/client"
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 //daily tasks
 async function main() {
@@ -14,7 +12,7 @@ async function main() {
             difficulty: 1,
             xp: 10,
         },
-    })
+    });
 
     const healthyCooking = await prisma.dailyTasks.upsert({
         where: { title: "Préparer et manger un repas sain" },
@@ -25,7 +23,7 @@ async function main() {
             difficulty: 3,
             xp: 40,
         },
-    })
+    });
 
     const physicalActivity = await prisma.dailyTasks.upsert({
         where: { title: "Faire 10 minutes d'activités physique" },
@@ -36,7 +34,7 @@ async function main() {
             difficulty: 3,
             xp: 40,
         },
-    })
+    });
 
     const readSomePages = await prisma.dailyTasks.upsert({
         where: { title: "Lire quelques pages d'un livre" },
@@ -47,7 +45,7 @@ async function main() {
             difficulty: 2,
             xp: 20,
         },
-    })
+    });
 
     const meditate = await prisma.dailyTasks.upsert({
         where: { title: "Méditer pendant 10 minutes" },
@@ -58,7 +56,7 @@ async function main() {
             difficulty: 1,
             xp: 10,
         },
-    })
+    });
 
     const learnSomethingNew = await prisma.dailyTasks.upsert({
         where: { title: "Apprendre quelque chose de nouveau" },
@@ -69,7 +67,7 @@ async function main() {
             difficulty: 3,
             xp: 40,
         },
-    })
+    });
 
     const walkOutside = await prisma.dailyTasks.upsert({
         where: { title: "Sortir dehors 30 minutes" },
@@ -80,7 +78,7 @@ async function main() {
             difficulty: 4,
             xp: 60,
         },
-    })
+    });
 
     const stayInTouch = await prisma.dailyTasks.upsert({
         where: { title: "Contacter un proche" },
@@ -91,7 +89,7 @@ async function main() {
             difficulty: 1,
             xp: 10,
         },
-    })
+    });
 
     const cookSomethingNew = await prisma.dailyTasks.upsert({
         where: { title: "Cuisiner quelque chose de nouveau" },
@@ -102,7 +100,7 @@ async function main() {
             difficulty: 3,
             xp: 40,
         },
-    })
+    });
 
     const stretchYourself = await prisma.dailyTasks.upsert({
         where: { title: "Faire des étirements" },
@@ -113,7 +111,7 @@ async function main() {
             difficulty: 2,
             xp: 20,
         },
-    })
+    });
 
     const cleanTheHouse = await prisma.dailyTasks.upsert({
         where: { title: "Faire un brin de ménage" },
@@ -124,7 +122,7 @@ async function main() {
             difficulty: 4,
             xp: 60,
         },
-    })
+    });
 
     const treatYourself = await prisma.dailyTasks.upsert({
         where: {
@@ -137,7 +135,7 @@ async function main() {
             difficulty: 3,
             xp: 40,
         },
-    })
+    });
 
     const doSomethingCreative = await prisma.dailyTasks.upsert({
         where: {
@@ -150,7 +148,7 @@ async function main() {
             difficulty: 4,
             xp: 60,
         },
-    })
+    });
 
     const musicListening = await prisma.dailyTasks.upsert({
         where: {
@@ -163,7 +161,7 @@ async function main() {
             difficulty: 1,
             xp: 10,
         },
-    })
+    });
 
     // success
     const hydrationControl = await prisma.success.upsert({
@@ -175,7 +173,7 @@ async function main() {
             amountNeeded: 25,
             successXp: 200,
         },
-    })
+    });
 
     const chef = await prisma.success.upsert({
         where: { title: "Chef·fe cuistot" },
@@ -186,7 +184,7 @@ async function main() {
             amountNeeded: 15,
             successXp: 200,
         },
-    })
+    });
 
     const bodybuilder = await prisma.success.upsert({
         where: { title: "Bodybuilder" },
@@ -197,7 +195,7 @@ async function main() {
             amountNeeded: 15,
             successXp: 200,
         },
-    })
+    });
 
     const bookworm = await prisma.success.upsert({
         where: { title: "Rat de bibliothèque" },
@@ -208,7 +206,7 @@ async function main() {
             amountNeeded: 20,
             successXp: 200,
         },
-    })
+    });
 
     const meditationPro = await prisma.success.upsert({
         where: { title: "Pro de la méditation" },
@@ -219,7 +217,7 @@ async function main() {
             amountNeeded: 25,
             successXp: 200,
         },
-    })
+    });
 
     const curiousScholar = await prisma.success.upsert({
         where: { title: "Savant curieux.se" },
@@ -230,7 +228,7 @@ async function main() {
             amountNeeded: 15,
             successXp: 200,
         },
-    })
+    });
 
     const closeToNature = await prisma.success.upsert({
         where: { title: "Proche de la Nature" },
@@ -241,7 +239,7 @@ async function main() {
             amountNeeded: 10,
             successXp: 200,
         },
-    })
+    });
 
     const perfectFriend = await prisma.success.upsert({
         where: { title: "L'Ami·e idéal·e" },
@@ -252,7 +250,7 @@ async function main() {
             amountNeeded: 25,
             successXp: 200,
         },
-    })
+    });
 
     const stretchinator = await prisma.success.upsert({
         where: { title: "Stretchinator" },
@@ -263,7 +261,7 @@ async function main() {
             amountNeeded: 20,
             successXp: 200,
         },
-    })
+    });
 
     const broomMaster = await prisma.success.upsert({
         where: { title: "Domination du balai" },
@@ -274,7 +272,7 @@ async function main() {
             amountNeeded: 10,
             successXp: 200,
         },
-    })
+    });
 
     const relaxationGuru = await prisma.success.upsert({
         where: { title: "Gourou de la Relaxation" },
@@ -285,7 +283,7 @@ async function main() {
             amountNeeded: 15,
             successXp: 200,
         },
-    })
+    });
 
     const virtuoso = await prisma.success.upsert({
         where: { title: "Virtuose" },
@@ -296,7 +294,7 @@ async function main() {
             amountNeeded: 10,
             successXp: 200,
         },
-    })
+    });
 
     const absolutePitch = await prisma.success.upsert({
         where: { title: "Oreille absolue" },
@@ -307,7 +305,7 @@ async function main() {
             amountNeeded: 25,
             successXp: 200,
         },
-    })
+    });
 
     const questMaster = await prisma.success.upsert({
         where: { title: "Quest Master" },
@@ -318,7 +316,7 @@ async function main() {
             amountNeeded: 100,
             successXp: 300,
         },
-    })
+    });
 
     const selfRuling = await prisma.success.upsert({
         where: { title: "Autonome" },
@@ -329,7 +327,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 20,
         },
-    })
+    });
 
     const perfectionist = await prisma.success.upsert({
         where: { title: "Perfectionniste" },
@@ -340,7 +338,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 100,
         },
-    })
+    });
 
     const buddingBond = await prisma.success.upsert({
         where: { title: "Lien naissant" },
@@ -351,7 +349,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const growingComplicity = await prisma.success.upsert({
         where: { title: "Complicité grandissante" },
@@ -362,7 +360,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const faithfulCompanion = await prisma.success.upsert({
         where: { title: "Compagnon fidèle" },
@@ -373,7 +371,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const unshakableFriendship = await prisma.success.upsert({
         where: { title: "Amitié inébranlable" },
@@ -384,7 +382,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const eternalFriendship = await prisma.success.upsert({
         where: { title: "Amitié éternelle" },
@@ -395,7 +393,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 0,
         },
-    })
+    });
 
     const hatching = await prisma.success.upsert({
         where: { title: "Sorti de l'oeuf" },
@@ -406,7 +404,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 10,
         },
-    })
+    });
 
     const miniYol = await prisma.success.upsert({
         where: { title: "Mini Yol" },
@@ -417,7 +415,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const greatYol = await prisma.success.upsert({
         where: { title: "Grand Yol" },
@@ -428,7 +426,7 @@ async function main() {
             amountNeeded: 1,
             successXp: 50,
         },
-    })
+    });
 
     const grumpfish = await prisma.species.upsert({
         where: { name: "Grumpfish" },
@@ -437,7 +435,7 @@ async function main() {
             name: "Grumpfish",
             image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
         },
-    })
+    });
 
     const bumbleblink = await prisma.species.upsert({
         where: { name: "Bumbleblink" },
@@ -446,7 +444,7 @@ async function main() {
             name: "Bumbleblink",
             image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/Dd89OgjoR9ew6T1kK_M-qg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
         },
-    })
+    });
 
     const greenbelly = await prisma.species.upsert({
         where: { name: "Greenbelly" },
@@ -455,15 +453,15 @@ async function main() {
             name: "Greenbelly",
             image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/MkOpsV0LQ9O4lktVdp5uVA?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
         },
-    })
+    });
 }
 
 main()
     .then(async () => {
-        await prisma.$disconnect()
+        await prisma.$disconnect();
     })
     .catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-        process.exit(1)
-    })
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    });
