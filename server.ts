@@ -5,6 +5,7 @@ dotenv.config();
 
 const port = process.env.PORT || 3000;
 
+// create server with app as an argument
 const server = http.createServer(app);
 
 server.on("listening", () => {
