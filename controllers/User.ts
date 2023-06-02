@@ -5,27 +5,27 @@ import bcrypt from "bcrypt";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const signup = async(req: Request, res: Response, next: NextFunction) => {
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
     const { username, email, password } = req.body;
 
     const existingUsername = await prisma.users.findUnique({
         where: {
             username,
-        }
-    })
-    
+        },
+    });
+
     const existingEmail = await prisma.users.findUnique({
         where: {
             email,
-        }
-    })
+        },
+    });
 
     if (existingUsername != null) {
-        return res.status(400).json({ error: 'Username already taken'})
+        return res.status(400).json({ erreur: "Le nom d'utilisteur existe déjà " });
     }
 
     if (existingEmail != null) {
-        return res.status(400).json({error: 'Email already taken'})
+        return res.status(400).json({ erreur: "L'email existe déjà" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,8 +35,8 @@ export const signup = async(req: Request, res: Response, next: NextFunction) => 
             username,
             email,
             password: hashedPassword,
-        }
-    })    
+        },
+    });
 };
 
 export const login = (req: Request, res: Response, next: NextFunction) => {
