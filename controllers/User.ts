@@ -38,7 +38,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
         },
     });
 
-    return res.status(201).json({ user: username, message: "Inscription réussie! 🥳🎊" });
+    return res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊" });
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
