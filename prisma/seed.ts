@@ -172,6 +172,7 @@ async function main() {
             description: "Boire de l'eau 25 fois",
             amountNeeded: 25,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -183,6 +184,7 @@ async function main() {
             description: "Préparer un repas sain et équilibré 15 fois",
             amountNeeded: 15,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -194,6 +196,7 @@ async function main() {
             description: 'Accomplir la tâche "Faire 10 minutes d\'activité physique" 15 fois',
             amountNeeded: 15,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -205,6 +208,7 @@ async function main() {
             description: 'Accomplir la tâche "Lire quelques pages d\'un livre" 20 fois',
             amountNeeded: 20,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -216,6 +220,7 @@ async function main() {
             description: 'Accomplir la tâche "Méditer 10 minutes" 25 fois',
             amountNeeded: 25,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -227,6 +232,7 @@ async function main() {
             description: "Apprendre quelque chose de nouveau 15 fois",
             amountNeeded: 15,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -238,6 +244,7 @@ async function main() {
             description: 'Accomplir la tâche "Sortir dehors 30 minutes" 10 fois',
             amountNeeded: 10,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -249,6 +256,7 @@ async function main() {
             description: "Prendre contact avec un ami ou un membre de la famille 25 fois",
             amountNeeded: 25,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -260,6 +268,7 @@ async function main() {
             description: 'Accomplir la tâche "S\'étirer pendant 5 minutes" 20 fois',
             amountNeeded: 20,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -271,6 +280,7 @@ async function main() {
             description: "Faire le ménage 10 fois",
             amountNeeded: 10,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -282,6 +292,7 @@ async function main() {
             description: "Prendre un moment pour soi 15 fois",
             amountNeeded: 15,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -293,6 +304,7 @@ async function main() {
             description: "Pratiquer une compétence artistique 10 fois",
             amountNeeded: 10,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -304,6 +316,7 @@ async function main() {
             description: "Avoir écouté de la musique 25 fois",
             amountNeeded: 25,
             successXp: 200,
+            type: "Daily",
         },
     });
 
@@ -315,6 +328,7 @@ async function main() {
             description: "Finir un total de 100 tâches quotidiennes",
             amountNeeded: 100,
             successXp: 300,
+            type: "Unique",
         },
     });
 
@@ -326,6 +340,7 @@ async function main() {
             description: "Créer et compléter une première tâche personnalisée",
             amountNeeded: 1,
             successXp: 20,
+            type: "Unique",
         },
     });
 
@@ -337,6 +352,7 @@ async function main() {
             description: "Terminer toutes les tâches quotidiennes d'une journée",
             amountNeeded: 1,
             successXp: 100,
+            type: "Unique",
         },
     });
 
@@ -348,6 +364,7 @@ async function main() {
             description: "Passer son Yol au niveau 3",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
@@ -359,6 +376,7 @@ async function main() {
             description: "Passer son Yol au niveau 10",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
@@ -370,6 +388,7 @@ async function main() {
             description: "Passer son Yol au niveau 20",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
@@ -381,6 +400,7 @@ async function main() {
             description: "Passer son Yol au niveau 30",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
@@ -392,6 +412,7 @@ async function main() {
             description: "Passer son Yol au niveau 40",
             amountNeeded: 1,
             successXp: 0,
+            type: "Yol",
         },
     });
 
@@ -403,6 +424,7 @@ async function main() {
             description: "Faire éclore son Yol",
             amountNeeded: 1,
             successXp: 10,
+            type: "Yol",
         },
     });
 
@@ -414,6 +436,7 @@ async function main() {
             description: "Evoluer une première fois son Yol",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
@@ -425,9 +448,11 @@ async function main() {
             description: "Evoluer une seconde fois son Yol",
             amountNeeded: 1,
             successXp: 50,
+            type: "Yol",
         },
     });
 
+    // species
     const grumpfish = await prisma.species.upsert({
         where: { name: "Grumpfish" },
         update: {},
