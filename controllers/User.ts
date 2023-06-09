@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-require('dotenv').config();
-
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -59,7 +57,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
-        const mainToken = process.env.JWT_TOKEN;
+        const mainToken = process.env.JWT_TOKEN;        
         
         const token = jwt.sign({ userId: user.id }, `${mainToken}`, {
             expiresIn: "10m",
