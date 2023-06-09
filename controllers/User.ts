@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+require('dotenv').config();
+
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -52,13 +54,13 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         });
 
         if (user === null) {
-            return res.status(401).json({ erreur: "Identiants non valides 😢" });
+            return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         const mainToken = process.env.JWT_TOKEN;
-
+        
         const token = jwt.sign({ userId: user.id }, `${mainToken}`, {
             expiresIn: "10m",
         });
@@ -66,9 +68,29 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         if (passwordMatch) {
             return res.status(200).json({ userId: user.id, token, message: "Connexion réussie!" });
         } else {
-            return res.status(401).json({ erreur: "Identiants non valides 😢" });
+            return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
     } catch (error) {
         res.status(500).json({ erreur: "oops! 😬" });
+    }
+};
+
+exports.getUser = async (req: Request, res: Response, next: NextFunction) => {
+    const user = await prisma.users.findUnique({
+        where: {
+            id: parseInt(req.params.id, 10),
+        },
+    });
+
+    if (user === null) {       
+        return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
+    } else {
+        return res.status(200).json({ 
+            id: user.id,
+            pp: user.pp,
+            banner: user.banner,
+            email: user.email,
+            username: user.username,
+        });
     }
 };
