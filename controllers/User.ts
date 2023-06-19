@@ -57,19 +57,17 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
-        const mainToken = process.env.JWT_TOKEN;        
-        
-        const token = jwt.sign({ userId: user.id }, `${mainToken}`, {
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
             expiresIn: "10m",
         });
 
         if (passwordMatch) {
-            return res.status(200).json({ userId: user.id, token, message: "Connexion réussie!" });
+            return res.status(200).json({ userId: user.id, token, message: "Connexion réussie! 🥳" });
         } else {
             return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
     } catch (error) {
-        res.status(500).json({ erreur: "oops! 😬" });
+        res.status(500).json({ erreur: error });
     }
 };
 
@@ -80,10 +78,10 @@ exports.getUser = async (req: Request, res: Response, next: NextFunction) => {
         },
     });
 
-    if (user === null) {       
+    if (user === null) {
         return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
     } else {
-        return res.status(200).json({ 
+        return res.status(200).json({
             id: user.id,
             pp: user.pp,
             banner: user.banner,
