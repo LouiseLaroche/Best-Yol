@@ -7,11 +7,11 @@ export const getAllSuccess = async (req: Request, res: Response) => {
     prisma.success.findMany()
         .then(success => {
             if (success === null) {
-            return res.status(404).json({ message : 'Succès introuvables 😢' });
+                return res.status(404).json({ message : 'Succès introuvables 😢' });
             }
-            res.status(200).json({ success });
+            return res.status(200).json({ success });
         })
-        .catch(error => res.status(404).json({ error }));
+        .catch(error => res.status(404).json({ erreur: error }));
 };
 
 export const getOneSuccess = async (req: Request, res: Response) => {
@@ -20,9 +20,9 @@ export const getOneSuccess = async (req: Request, res: Response) => {
           if (success === null) {
             return res.status(404).json({ message : 'Succès introuvable 😢' });
           }
-          res.status(200).json({ ...success });
+          return res.status(200).json({ ...success });
         })
-        .catch(error => res.status(404).json({ error }));
+        .catch(error => res.status(404).json({ erreur: error }));
 };
 
 export default {
