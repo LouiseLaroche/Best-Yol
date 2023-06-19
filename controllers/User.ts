@@ -71,7 +71,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-exports.getUser = async (req: Request, res: Response, next: NextFunction) => {
+export const getUser = async (req: Request, res: Response, next: NextFunction) => {
     const user = await prisma.users.findUnique({
         where: {
             id: parseInt(req.params.id, 10),
@@ -89,4 +89,10 @@ exports.getUser = async (req: Request, res: Response, next: NextFunction) => {
             username: user.username,
         });
     }
+};
+
+export default {
+    signup,
+    login,
+    getUser,
 };

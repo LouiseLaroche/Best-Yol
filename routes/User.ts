@@ -3,10 +3,10 @@ import authToken from "../middlewares/authToken";
 
 const router: Router = express.Router();
 
-const userController = require("../controllers/User.ts");
+import userController from "../controllers/User";
 
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/:id", authToken, userController.getUser);
 
-module.exports = router;
+export default router;

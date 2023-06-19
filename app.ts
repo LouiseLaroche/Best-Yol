@@ -1,7 +1,7 @@
 import express, { Express, NextFunction, Request, Response, Router } from "express";
 
 // routes import
-const userRoutes = require("./routes/User");
+import userRoutes from "./routes/User";
 
 // call express method to create express app
 const app: Express = express();
@@ -21,7 +21,7 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
     next();
 });
 
-app.use('/api/user', userRoutes);
+app.use("/api/user", userRoutes);
 
 // routes
 // app.use("/user", userRoutes);
