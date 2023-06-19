@@ -6,5 +6,6 @@ const router: Router = express.Router();
 import successController from "../controllers/Success"
 
 router.get("/", authToken, successController.getAllSuccess);
+router.get("/:id", authToken, successController.getOneSuccess);
 
 export default router;
