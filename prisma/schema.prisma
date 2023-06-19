@@ -15,7 +15,7 @@ model Users {
   pp          String?
   banner      String?
   email       String   @unique
-  name        String
+  username    String   @unique
   password    String
   Yol         Yol[]
   UserSuccess UserSuccess[]
@@ -46,6 +46,7 @@ model Success {
   description  String
   amountNeeded Int
   successXp    Int
+  type         String
   UserSuccess  UserSuccess[]
 }
 
