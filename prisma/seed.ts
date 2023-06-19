@@ -453,31 +453,100 @@ async function main() {
     });
 
     // species
-    const grumpfish = await prisma.species.upsert({
-        where: { name: "Grumpfish" },
-        update: {},
-        create: {
+    const grumpfishEgg = await prisma.species.create({
+        data: {
             name: "Grumpfish",
             image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
-        },
+            stage: "Egg"
+        }
     });
 
-    const bumbleblink = await prisma.species.upsert({
-        where: { name: "Bumbleblink" },
-        update: {},
-        create: {
+    const grumpfishBaby = await prisma.species.create({
+        data: {
+            name: "Grumpfish",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Baby"
+        }
+    });
+
+    const grumpfishAdo = await prisma.species.create({
+        data: {
+            name: "Grumpfish",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Adolescent"
+        }
+    });
+
+    const grumpfishFinal = await prisma.species.create({
+        data: {
+            name: "Grumpfish",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Final"
+        }
+    });
+
+    const bumbleblinkEgg = await prisma.species.create({
+        data: {
             name: "Bumbleblink",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/Dd89OgjoR9ew6T1kK_M-qg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
-        },
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Egg"
+        }
     });
 
-    const greenbelly = await prisma.species.upsert({
-        where: { name: "Greenbelly" },
-        update: {},
-        create: {
+    const bumbleblinkBaby = await prisma.species.create({
+        data: {
+            name: "Bumbleblink",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Baby"
+        }
+    });
+
+    const bumbleblinkAdo = await prisma.species.create({
+        data: {
+            name: "Bumbleblink",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Adolescent"
+        }
+    });
+
+    const bumbleblinkFinal = await prisma.species.create({
+        data: {
+            name: "Bumbleblink",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Final"
+        }
+    });
+
+    const greenbellyEgg = await prisma.species.create({
+        data: {
             name: "Greenbelly",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/MkOpsV0LQ9O4lktVdp5uVA?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
-        },
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Egg"
+        }
+    });
+
+    const greenbellyBaby = await prisma.species.create({
+        data: {
+            name: "Greenbelly",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Baby"
+        }
+    });
+
+    const greenbellyAdo = await prisma.species.create({
+        data: {
+            name: "Greenbelly",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Adolescent"
+        }
+    });
+
+    const greenbellyFinal = await prisma.species.create({
+        data: {
+            name: "Greenbelly",
+            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            stage: "Final"
+        }
     });
 }
 
