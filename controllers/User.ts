@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import userSuccess from "../controllers/UserSuccess";
 
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -28,6 +29,7 @@ export const signup = async (req: Request, res: Response) => {
             password: hashedPassword,
         },
     })
+        .then((user) => userSuccess.createUserSuccess(user.id))
         .then(() => res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊" }))
         .catch(error => res.status(500).json({ erreur: error }));
 };
