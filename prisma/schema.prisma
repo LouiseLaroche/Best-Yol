@@ -34,8 +34,9 @@ model Yol {
 
 model Species {
   id        Int      @id @default(autoincrement())
-  name      String   @unique
+  name      String
   image     String
+  stage     String
   Yol       Yol[]
 }
 
