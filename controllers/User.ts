@@ -26,10 +26,21 @@ export const signup = async (req: Request, res: Response) => {
             username,
             email,
             password: hashedPassword,
+            pp: "/assets/avatars/Icon/1.png",
         },
+
+    });
+
+    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_TOKEN as string, {
+        expiresIn: "12h",
+    });
+
+    return res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊", token });
+
     })
         .then(() => res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊" }))
         .catch(error => res.status(500).json({ erreur: error }));
+
 };
 
 export const login = async (req: Request, res: Response) => {
