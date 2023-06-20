@@ -33,16 +33,14 @@ export const signup = async (req: Request, res: Response) => {
         })
         .then((user) => {
             userSuccess.createUserSuccess(user.id);
-            
+
             const { password, ...userWithoutPassword } = user;
             res.status(201).json({
-                username: username,
-                email: email,
+                user: userWithoutPassword,
                 message: "Inscription réussie! 🥳🎊",
                 token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
                     expiresIn: "12h",
                 }),
-                user: userWithoutPassword,
             });
         })
         .catch((error) => res.status(500).json({ erreur: error }));
@@ -65,12 +63,11 @@ export const login = async (req: Request, res: Response) => {
                         const { password, ...userWithoutPassword } = user;
 
                         return res.status(200).json({
-                            userId: user.id,
+                            user: userWithoutPassword,
                             message: "Connexion réussie! 🥳",
                             token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
                                 expiresIn: "12h",
                             }),
-                            user: userWithoutPassword,
                         });
                     } else {
                         return res.status(401).json({ erreur: "Identifiants non valides 😢" });
