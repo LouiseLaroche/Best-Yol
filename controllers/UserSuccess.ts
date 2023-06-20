@@ -21,15 +21,22 @@ export const createUserSuccess = async (userId: number) => {
         .catch(error => console.log("error findMany:", error));
 };
 
-export const getAllUserSuccess = async (req: Request, res: Response) => {
-//     prisma.userSuccess.findMany()
-//         .then(success => {
-//             if (success === null) {
-//                 return res.status(404).json({ message : 'Succès introuvables pour cet utilisateur 😢' });
-//             }
-//             return res.status(200).json({ success });
-//         })
-//         .catch(error => res.status(404).json({ erreur: error }));
+export const getAllUserSuccessByUserId = async (req: Request, res: Response) => {    
+    prisma.userSuccess.findMany({
+        where: {
+          userId: parseInt(req.params.userId, 10),
+        },
+        include: {
+            success: true,
+        },
+    })
+        .then(userSuccess => {
+            if (userSuccess.length === 0) {
+                return res.status(404).json({ message : 'Succès introuvables pour cet utilisateur 😢' });
+            }
+            return res.status(200).json({ userSuccess });
+        })
+        .catch(error => res.status(404).json({ erreur: error }));
 };
 
 export const getOneUserSuccess = async (req: Request, res: Response) => {
@@ -45,6 +52,6 @@ export const getOneUserSuccess = async (req: Request, res: Response) => {
 
 export default {
     createUserSuccess,
-    getAllUserSuccess,
+    getAllUserSuccessByUserId,
     getOneUserSuccess,
 };
