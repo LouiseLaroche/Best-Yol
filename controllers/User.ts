@@ -35,10 +35,15 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             username,
             email,
             password: hashedPassword,
+            pp: "/assets/avatars/Icon/1.png",
         },
     });
 
-    return res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊" });
+    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_TOKEN as string, {
+        expiresIn: "12h",
+    });
+
+    return res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊", token });
 };
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
