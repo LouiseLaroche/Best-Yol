@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import userSuccess from "../controllers/UserSuccess";
 
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -31,6 +32,8 @@ export const signup = async (req: Request, res: Response) => {
             },
         })
         .then((user) => {
+            userSuccess.createUserSuccess(user.id);
+            
             const { password, ...userWithoutPassword } = user;
             res.status(201).json({
                 username: username,
