@@ -67,7 +67,7 @@ export const login = async (req: Request, res: Response) => {
                             token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
                                 expiresIn: "12h",
                             }),
-                            userWithoutPassword,
+                            user: userWithoutPassword,
                         });
                     } else {
                         return res.status(401).json({ erreur: "Identifiants non valides 😢" });
