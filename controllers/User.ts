@@ -27,7 +27,7 @@ export const signup = async (req: Request, res: Response) => {
                 username,
                 email,
                 password: hashedPassword,
-                pp: "/assets/avatars/Icon/1.png",
+                pp: "/assets/avatars/Icon1.png",
             },
         })
         .then((user) =>
