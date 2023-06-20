@@ -8,37 +8,39 @@ const prisma = new PrismaClient();
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
-    try {
-        const existingUsername = await prisma.users.findUnique({ where: { username } });
-        const existingEmail = await prisma.users.findUnique({ where: { email } });
+    const existingUsername = await prisma.users.findUnique({ where: { username } });
+    const existingEmail = await prisma.users.findUnique({ where: { email } });
 
-        if (existingUsername != null) {
-            return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
-        }
+    if (existingUsername != null) {
+        return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
+    }
 
-        if (existingEmail != null) {
-            return res.status(400).json({ erreur: "L'email existe déjà" });
-        }
+    if (existingEmail != null) {
+        return res.status(400).json({ erreur: "L'email existe déjà" });
+    }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await prisma.users.create({
+    prisma.users
+        .create({
             data: {
                 username,
                 email,
                 password: hashedPassword,
                 pp: "/assets/avatars/Icon/1.png",
             },
-        });
-
-        const token = jwt.sign({ userId: newUser.id }, process.env.JWT_TOKEN as string, {
-            expiresIn: "12h",
-        });
-
-        return res.status(201).json({ user: username, email: email, message: "Inscription réussie! 🥳🎊", token });
-    } catch (error) {
-        return res.status(401).json({ erreur: error });
-    }
+        })
+        .then((user) =>
+            res.status(201).json({
+                user: username,
+                email: email,
+                message: "Inscription réussie! 🥳🎊",
+                token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
+                    expiresIn: "12h",
+                }),
+            })
+        )
+        .catch((error) => res.status(500).json({ erreur: error }));
 };
 
 export const login = async (req: Request, res: Response) => {
