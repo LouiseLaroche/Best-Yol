@@ -456,7 +456,8 @@ async function main() {
     const grumpfishEgg = await prisma.species.create({
         data: {
             name: "Grumpfish",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/egg/static/pouasson.png",
+            gif: "/assets/yols/egg/animated/pouasson.gif",
             stage: "Egg"
         }
     });
@@ -464,7 +465,8 @@ async function main() {
     const grumpfishBaby = await prisma.species.create({
         data: {
             name: "Grumpfish",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/base/static/pouasson.png",
+            gif: "/assets/yols/base/animated/pouasson.gif",
             stage: "Baby"
         }
     });
@@ -472,7 +474,8 @@ async function main() {
     const grumpfishAdo = await prisma.species.create({
         data: {
             name: "Grumpfish",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/second/static/pouasson.png",
+            gif: "/assets/yols/second/animated/pouasson.gif",
             stage: "Adolescent"
         }
     });
@@ -480,7 +483,8 @@ async function main() {
     const grumpfishFinal = await prisma.species.create({
         data: {
             name: "Grumpfish",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/third/static/pouasson.png",
+            gif: "/assets/yols/third/animated/pouasson.gif",
             stage: "Final"
         }
     });
@@ -488,7 +492,8 @@ async function main() {
     const bumbleblinkEgg = await prisma.species.create({
         data: {
             name: "Bumbleblink",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/egg/static/fantom.png",
+            gif: "/assets/yols/egg/animated/fantom.gif",
             stage: "Egg"
         }
     });
@@ -496,7 +501,8 @@ async function main() {
     const bumbleblinkBaby = await prisma.species.create({
         data: {
             name: "Bumbleblink",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/base/static/fantom.png",
+            gif: "/assets/yols/base/animated/fantom.gif",
             stage: "Baby"
         }
     });
@@ -504,7 +510,8 @@ async function main() {
     const bumbleblinkAdo = await prisma.species.create({
         data: {
             name: "Bumbleblink",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/second/static/fantom.png",
+            gif: "/assets/yols/second/animated/fantom.gif",
             stage: "Adolescent"
         }
     });
@@ -512,7 +519,8 @@ async function main() {
     const bumbleblinkFinal = await prisma.species.create({
         data: {
             name: "Bumbleblink",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/third/static/fantom.png",
+            gif: "/assets/yols/third/animated/fantom.gif",
             stage: "Final"
         }
     });
@@ -520,7 +528,8 @@ async function main() {
     const greenbellyEgg = await prisma.species.create({
         data: {
             name: "Greenbelly",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/egg/static/feuille.png",
+            gif: "/assets/yols/egg/animated/feuille.gif",
             stage: "Egg"
         }
     });
@@ -528,7 +537,8 @@ async function main() {
     const greenbellyBaby = await prisma.species.create({
         data: {
             name: "Greenbelly",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/base/static/feuille.png",
+            gif: "/assets/yols/base/animated/feuille.gif",
             stage: "Baby"
         }
     });
@@ -536,7 +546,8 @@ async function main() {
     const greenbellyAdo = await prisma.species.create({
         data: {
             name: "Greenbelly",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/second/static/feuille.png",
+            gif: "/assets/yols/second/animated/feuille.gif",
             stage: "Adolescent"
         }
     });
@@ -544,7 +555,8 @@ async function main() {
     const greenbellyFinal = await prisma.species.create({
         data: {
             name: "Greenbelly",
-            image: "https://thumbnails-photos.amazon.fr/v1/thumbnail/4Cq_4XPvRCOOgQzFNohZMg?viewBox=1394%2C929&ownerId=A3QC0888JRKFZE",
+            image: "/assets/yols/third/static/feuille.png",
+            gif: "/assets/yols/third/animated/feuille.gif",
             stage: "Final"
         }
     });
