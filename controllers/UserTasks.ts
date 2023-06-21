@@ -7,7 +7,8 @@ import { getRandomElements } from "../utils/getRandomElements";
 const prisma = new PrismaClient();
 
 export const createUserCustomTask = async (req: Request, res: Response) => {
-    const { userId, title } = req.body;
+    const { title } = req.body;
+    const { userId } = req.params;
 
     prisma.userTasks
         .create({

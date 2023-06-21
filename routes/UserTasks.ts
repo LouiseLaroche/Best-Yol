@@ -7,6 +7,6 @@ import userTasksController from "../controllers/UserTasks";
 
 router.get("/:userId", authToken, userTasksController.getUserTasks);
 router.post("/daily/:userId", authToken, userTasksController.createUserDailyTasks);
-router.post("/", authToken, userTasksController.createUserCustomTask);
+router.post("/:userId", authToken, userTasksController.createUserCustomTask);
 
 export default router;
