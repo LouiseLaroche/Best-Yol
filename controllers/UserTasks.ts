@@ -69,6 +69,7 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
                         createdAt: new Date(),
                         isCompleted: false,
                         completedAt: null,
+                        dailyTaskId: task.id,
                     },
                 });
             });
@@ -96,6 +97,9 @@ export const getUserTasks = async (req: Request, res: Response) => {
         .findMany({
             where: {
                 userId: parseInt(userId, 10),
+            },
+            include: {
+                dailyTask: true,
             },
         })
         .then((userTasks) => {
