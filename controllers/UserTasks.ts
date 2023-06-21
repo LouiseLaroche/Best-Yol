@@ -28,7 +28,7 @@ export const createUserCustomTask = async (req: Request, res: Response) => {
         });
 };
 
-export const createUserDailyTasks = async (req: Request, res: Response, next: NextFunction) => {
+export const createUserDailyTasks = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     const today = new Date();
