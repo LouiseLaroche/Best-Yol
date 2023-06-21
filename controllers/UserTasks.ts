@@ -43,7 +43,7 @@ export const changeTitleCustomTask = (req: Request, res: Response) => {
             },
         })
         .then((updatedTask) => {
-            res.json(updatedTask);
+            res.status(200).json({ updatedTask, message: "tâche modifiée 🥳🎉" });
         })
         .catch((error) => {
             res.status(500).json({ erreur: "Erreur lors du changement de titre", error });
