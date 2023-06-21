@@ -6,7 +6,9 @@ const router: Router = express.Router();
 import userTasksController from "../controllers/UserTasks";
 
 router.get("/:userId", authToken, userTasksController.getUserTasks);
-router.post("/daily/:userId", authToken, userTasksController.createUserDailyTasks);
 router.post("/:userId", authToken, userTasksController.createUserCustomTask);
+router.put("/:taskId", authToken, userTasksController.changeTitleCustomTask);
+router.delete("/:taskId", authToken, userTasksController.deleteCustomTask);
+router.post("/daily/:userId", authToken, userTasksController.createUserDailyTasks);
 
 export default router;

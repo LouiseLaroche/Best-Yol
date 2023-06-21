@@ -73,13 +73,14 @@ model DailyTasks {
 }
 
 model UserTasks {
-  id           Int            @id @default(autoincrement())
-  title        String
-  isDaily      Boolean
-  isCompleted  Boolean
-  createdAt    DateTime
-  completedAt  DateTime?
-  dailyTasks   DailyTasks[]
-  user         Users          @relation(fields: [userId], references: [id])
-  userId       Int
+  id            Int            @id @default(autoincrement())
+  title         String
+  isDaily       Boolean
+  isCompleted   Boolean
+  createdAt     DateTime
+  completedAt   DateTime?
+  dailyTask     DailyTasks      @relation(fields: [dailyTaskId], references: [id])
+  dailyTaskId   Int
+  user          Users           @relation(fields: [userId], references: [id])
+  userId        Int
 }

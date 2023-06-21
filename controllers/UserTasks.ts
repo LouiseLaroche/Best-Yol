@@ -24,9 +24,43 @@ export const createUserCustomTask = async (req: Request, res: Response) => {
         .then((userTask) => {
             res.status(201).json({ userTask, message: "Tâche créée 🥳🎉" });
         })
-        .catch(() => {
-            res.status(500).json({ erreur: "Erreur lors de la création de la tâche 😕" });
+        .catch((error) => {
+            res.status(500).json({ erreur: "Erreur lors de la création de la tâche 😕", error });
         });
+};
+
+export const changeTitleCustomTask = (req: Request, res: Response) => {
+    const { taskId } = req.params;
+    const { newTitle } = req.body;
+
+    prisma.userTasks
+        .update({
+            where: {
+                id: parseInt(taskId, 10),
+            },
+            data: {
+                title: newTitle,
+            },
+        })
+        .then((updatedTask) => {
+            res.json(updatedTask);
+        })
+        .catch((error) => {
+            res.status(500).json({ erreur: "Erreur lors du changement de titre", error });
+        });
+};
+
+export const deleteCustomTask = (req: Request, res: Response) => {
+    const { taskId } = req.params;
+
+    prisma.userTasks
+        .delete({
+            where: {
+                id: parseInt(taskId, 10),
+            },
+        })
+        .then(() => res.status(204).json({ message: "Tâche supprimée 🔫" }))
+        .catch((error) => res.status(500).json({ erreur: "Erreur lors de la suppression de la tâche", error }));
 };
 
 export const createUserDailyTasks = async (req: Request, res: Response) => {
@@ -69,6 +103,7 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
                         createdAt: new Date(),
                         isCompleted: false,
                         completedAt: null,
+                        dailyTaskId: task.id,
                     },
                 });
             });
@@ -97,6 +132,9 @@ export const getUserTasks = async (req: Request, res: Response) => {
             where: {
                 userId: parseInt(userId, 10),
             },
+            include: {
+                dailyTask: true,
+            },
         })
         .then((userTasks) => {
             const customTasks: UserTasks[] = [];
@@ -121,4 +159,6 @@ export default {
     createUserCustomTask,
     createUserDailyTasks,
     getUserTasks,
+    changeTitleCustomTask,
+    deleteCustomTask,
 };
