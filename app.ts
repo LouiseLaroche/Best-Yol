@@ -6,6 +6,7 @@ import successRoutes from "./routes/Success";
 import userSuccessRoutes from "./routes/UserSuccess";
 import userTasks from "./routes/UserTasks";
 import yolRoutes from "./routes/Yol";
+import speciesRoutes from "./routes/Species";
 
 // call express method to create express app
 const app: Express = express();
@@ -30,5 +31,6 @@ app.use("/api/success", successRoutes);
 app.use("/api/user-success", userSuccessRoutes);
 app.use("/api/user-tasks", userTasks);
 app.use("/api/yol", yolRoutes);
+app.use("/api/species", speciesRoutes);
 
 export default app;
