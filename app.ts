@@ -4,6 +4,7 @@ import express, { Express, NextFunction, Request, Response, Router } from "expre
 import userRoutes from "./routes/User";
 import successRoutes from "./routes/Success";
 import userSuccessRoutes from "./routes/UserSuccess";
+import yolRoutes from "./routes/Yol";
 
 // call express method to create express app
 const app: Express = express();
@@ -26,5 +27,6 @@ app.use((_req: Request, res: Response, next: NextFunction) => {
 app.use("/api/user", userRoutes);
 app.use("/api/success", successRoutes);
 app.use("/api/user-success", userSuccessRoutes);
+app.use("/api/yol", yolRoutes);
 
 export default app;
