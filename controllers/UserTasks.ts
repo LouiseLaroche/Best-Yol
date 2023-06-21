@@ -19,6 +19,7 @@ export const createUserCustomTask = async (req: Request, res: Response) => {
                 completedAt: null,
                 createdAt: new Date(),
                 userId: parseInt(userId, 10),
+                dailyTaskId: null,
             },
         })
         .then((userTask) => {

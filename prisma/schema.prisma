@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,39 +8,39 @@ datasource db {
 }
 
 model Users {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   pp          String?
   banner      String?
-  email       String   @unique
-  username    String   @unique
+  email       String        @unique
   password    String
-  Yol         Yol[]
+  username    String        @unique
   UserSuccess UserSuccess[]
   UserTasks   UserTasks[]
+  Yol         Yol[]
 }
 
 model Yol {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   name      String
   xp        Int
-  user      Users    @relation(fields: [userId], references: [id])
   userId    Int
-  species   Species  @relation(fields: [speciesId], references: [id])
   speciesId Int
+  species   Species @relation(fields: [speciesId], references: [id])
+  user      Users   @relation(fields: [userId], references: [id])
 }
 
 model Species {
-  id        Int      @id @default(autoincrement())
-  name      String
-  image     String
-  gif       String
-  stage     String
-  Yol       Yol[]
+  id    Int    @id @default(autoincrement())
+  name  String
+  image String
+  stage String
+  gif   String
+  Yol   Yol[]
 }
 
 model Success {
-  id           Int      @id @default(autoincrement())
-  title        String   @unique
+  id           Int           @id @default(autoincrement())
+  title        String        @unique
   image        String?
   description  String
   amountNeeded Int
@@ -53,34 +50,34 @@ model Success {
 }
 
 model UserSuccess {
-  id           Int      @id @default(autoincrement())
+  id           Int     @id @default(autoincrement())
   actualAmount Int
   isCompleted  Boolean
-  user         Users    @relation(fields: [userId], references: [id])
   userId       Int
-  success      Success  @relation(fields: [successId], references: [id])
   successId    Int
+  success      Success @relation(fields: [successId], references: [id])
+  user         Users   @relation(fields: [userId], references: [id])
 }
 
 model DailyTasks {
-  id          Int     @id @default(autoincrement())
-  category    String?
-  title       String  @unique
-  difficulty  Int
-  xp          Int
-  isActive    Boolean?
-  userTasks   UserTasks[]
+  id         Int         @id @default(autoincrement())
+  category   String?
+  title      String      @unique
+  difficulty Int
+  xp         Int
+  isActive   Boolean?
+  userTasks  UserTasks[]
 }
 
 model UserTasks {
-  id            Int            @id @default(autoincrement())
-  title         String
-  isDaily       Boolean
-  isCompleted   Boolean
-  createdAt     DateTime
-  completedAt   DateTime?
-  dailyTask     DailyTasks      @relation(fields: [dailyTaskId], references: [id])
-  dailyTaskId   Int
-  user          Users           @relation(fields: [userId], references: [id])
-  userId        Int
+  id          Int         @id @default(autoincrement())
+  title       String
+  isDaily     Boolean
+  isCompleted Boolean
+  completedAt DateTime?
+  userId      Int
+  createdAt   DateTime
+  dailyTaskId Int?
+  dailyTask   DailyTasks? @relation(fields: [dailyTaskId], references: [id])
+  user        Users       @relation(fields: [userId], references: [id])
 }
