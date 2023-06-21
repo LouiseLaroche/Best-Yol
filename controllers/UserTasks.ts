@@ -32,7 +32,7 @@ export const createUserCustomTask = async (req: Request, res: Response) => {
 
 export const changeTitleCustomTask = (req: Request, res: Response) => {
     const { taskId } = req.params;
-    const { newTitle } = req.body;
+    const { title } = req.body;
 
     prisma.userTasks
         .update({
@@ -40,7 +40,7 @@ export const changeTitleCustomTask = (req: Request, res: Response) => {
                 id: parseInt(taskId, 10),
             },
             data: {
-                title: newTitle,
+                title: title,
             },
         })
         .then((updatedTask) => {
