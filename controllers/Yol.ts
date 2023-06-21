@@ -32,7 +32,26 @@ export const getOneYol = async (req: Request, res: Response) => {
         .catch(error => res.status(404).json({ erreur: error }));
 };
 
+export const getAllYolByUserId = async (req: Request, res: Response) => {
+    prisma.yol.findMany({        
+        where: {
+            userId: parseInt(req.params.userId, 10),
+        },
+        include: {
+            species: true,
+        },
+    })
+        .then((yol) => {
+            if (yol.length === 0) {
+                return res.status(404).json({ message : 'Cet utilisateur ne possède pas de Yol !' });
+            }
+            res.status(200).json({ yol })
+        })
+        .catch(error => res.status(404).json({ erreur: error }));
+};
+
 export default {
     createYol,
     getOneYol,
+    getAllYolByUserId,
 };
