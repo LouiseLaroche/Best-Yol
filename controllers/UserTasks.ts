@@ -150,8 +150,8 @@ export const getUserTasks = async (req: Request, res: Response) => {
 
             res.status(200).json({ customTasks, dailyTasks });
         })
-        .catch(() => {
-            res.status(500).json({ erreur: "Une erreur est survenue lors de la récupération des tâches de l'utilisateur 😕" });
+        .catch((error) => {
+            res.status(500).json({ erreur: "Une erreur est survenue lors de la récupération des tâches de l'utilisateur 😕", error });
         });
 };
 
