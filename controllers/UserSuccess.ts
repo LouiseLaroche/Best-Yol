@@ -40,8 +40,8 @@ export const getAllUserSuccessByUserId = async (req: Request, res: Response) => 
 };
 
 export const validateSuccess = async (req: Request, res: Response) => {
-    const userSuccessId = req.params.id;
-    const yolId = req.body.yolId;
+    const userSuccessId: string = req.params.id;
+    const yolId: number = req.body.yolId;
 
     // Vérifier que le UserSuccess n'a pas déjà été validé
     prisma.userSuccess.findUnique({ where: { id: parseInt(userSuccessId, 10) }})

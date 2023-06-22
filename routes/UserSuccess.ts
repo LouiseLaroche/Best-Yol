@@ -6,6 +6,6 @@ const router: Router = express.Router();
 import userSuccessController from "../controllers/UserSuccess"
 
 router.get("/:userId", authToken, userSuccessController.getAllUserSuccessByUserId);
-router.post("/validate/:id", authToken, userSuccessController.validateSuccess);
+router.patch("/validate/:id", authToken, userSuccessController.validateSuccess);
 
 export default router;
