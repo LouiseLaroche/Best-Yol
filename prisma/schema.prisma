@@ -60,14 +60,15 @@ model UserSuccess {
 }
 
 model DailyTasks {
-  id         Int         @id @default(autoincrement())
-  category   String?
-  title      String      @unique
-  difficulty Int
-  xp         Int
-  isActive   Boolean?
-  image      String?
-  userTasks  UserTasks[]
+  id               Int         @id @default(autoincrement())
+  category         String?
+  title            String      @unique
+  difficulty       Int
+  xp               Int
+  isActive         Boolean?
+  image            String?
+  lastAssignDate   DateTime?
+  userTasks        UserTasks[]
 }
 
 model UserTasks {
