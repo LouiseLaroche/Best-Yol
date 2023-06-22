@@ -1,11 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-//daily tasks
 async function main() {
+    //daily tasks
     const water = await prisma.dailyTasks.upsert({
         where: { title: "Boire de l'eau" },
-        update: {},
+        update: {
+            image: '/assets/tasks/1.svg',
+        },
         create: {
             title: "Boire de l'eau",
             category: "Besoin vitaux",
@@ -16,7 +18,9 @@ async function main() {
 
     const healthyCooking = await prisma.dailyTasks.upsert({
         where: { title: "Préparer et manger un repas sain" },
-        update: {},
+        update: {
+            image: '/assets/tasks/2.svg',
+        },
         create: {
             title: "Préparer et manger un repas sain",
             category: "Besoin vitaux",
@@ -27,7 +31,10 @@ async function main() {
 
     const physicalActivity = await prisma.dailyTasks.upsert({
         where: { title: "Faire 10 minutes d'activités physique" },
-        update: {},
+        update: {
+            image: '/assets/tasks/3.svg',
+            title: "Faire 10 minutes d'activité physique",
+        },
         create: {
             title: "Faire 10 minutes d'activités physique",
             category: "Sport",
@@ -38,7 +45,9 @@ async function main() {
 
     const readSomePages = await prisma.dailyTasks.upsert({
         where: { title: "Lire quelques pages d'un livre" },
-        update: {},
+        update: {
+            image: '/assets/tasks/4.svg',
+        },
         create: {
             title: "Lire quelques pages d'un livre",
             category: "Apprentissage",
@@ -49,7 +58,9 @@ async function main() {
 
     const meditate = await prisma.dailyTasks.upsert({
         where: { title: "Méditer pendant 10 minutes" },
-        update: {},
+        update: {
+            image: '/assets/tasks/5.svg',
+        },
         create: {
             title: "Méditer pendant 10 minutes",
             category: "Relaxation",
@@ -60,7 +71,9 @@ async function main() {
 
     const learnSomethingNew = await prisma.dailyTasks.upsert({
         where: { title: "Apprendre quelque chose de nouveau" },
-        update: {},
+        update: {
+            image: '/assets/tasks/6.svg',
+        },
         create: {
             title: "Apprendre quelque chose de nouveau",
             category: "Apprentissage",
@@ -71,7 +84,9 @@ async function main() {
 
     const walkOutside = await prisma.dailyTasks.upsert({
         where: { title: "Sortir dehors 30 minutes" },
-        update: {},
+        update: {
+            image: '/assets/tasks/7.svg',
+        },
         create: {
             title: "Sortir dehors 30 minutes",
             category: "Sport",
@@ -82,7 +97,9 @@ async function main() {
 
     const stayInTouch = await prisma.dailyTasks.upsert({
         where: { title: "Contacter un proche" },
-        update: {},
+        update: {
+            image: '/assets/tasks/8.svg',
+        },
         create: {
             title: "Contacter un proche",
             category: "Besoin vitaux",
@@ -104,7 +121,9 @@ async function main() {
 
     const stretchYourself = await prisma.dailyTasks.upsert({
         where: { title: "Faire des étirements" },
-        update: {},
+        update: {
+            image: '/assets/tasks/9.svg',
+        },
         create: {
             title: "Faire des étirements",
             category: "Relaxation",
@@ -115,7 +134,9 @@ async function main() {
 
     const cleanTheHouse = await prisma.dailyTasks.upsert({
         where: { title: "Faire un brin de ménage" },
-        update: {},
+        update: {
+            image: '/assets/tasks/10.svg',
+        },
         create: {
             title: "Faire un brin de ménage",
             category: "Corvée",
@@ -128,7 +149,9 @@ async function main() {
         where: {
             title: "Prendre un moment pour s'occuper de soi",
         },
-        update: {},
+        update: {
+            image: '/assets/tasks/11.svg',
+        },
         create: {
             title: "Prendre un moment pour s'occuper de soi",
             category: "Relaxation",
@@ -141,7 +164,9 @@ async function main() {
         where: {
             title: "Faire quelque chose de créatif",
         },
-        update: {},
+        update: {
+            image: '/assets/tasks/12.svg',
+        },
         create: {
             title: "Faire quelque chose de créatif",
             category: "Relaxation",
@@ -154,7 +179,9 @@ async function main() {
         where: {
             title: "Écouter de la musique",
         },
-        update: {},
+        update: {
+            image: '/assets/tasks/13.svg',
+        },
         create: {
             title: "Écouter de la musique",
             category: "Relaxation",

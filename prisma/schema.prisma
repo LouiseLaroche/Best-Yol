@@ -66,6 +66,7 @@ model DailyTasks {
   difficulty Int
   xp         Int
   isActive   Boolean?
+  image      String?
   userTasks  UserTasks[]
 }
 
