@@ -6,10 +6,10 @@ async function main() {
     const water = await prisma.dailyTasks.upsert({
         where: { title: "Boire de l'eau" },
         update: {
-            image: '/assets/tasks/1.svg',
         },
         create: {
             title: "Boire de l'eau",
+            image: '/assets/tasks/1.svg',
             category: "Besoin vitaux",
             difficulty: 1,
             xp: 10,
@@ -19,10 +19,10 @@ async function main() {
     const healthyCooking = await prisma.dailyTasks.upsert({
         where: { title: "Préparer et manger un repas sain" },
         update: {
-            image: '/assets/tasks/2.svg',
         },
         create: {
             title: "Préparer et manger un repas sain",
+            image: '/assets/tasks/2.svg',
             category: "Besoin vitaux",
             difficulty: 3,
             xp: 40,
@@ -30,13 +30,12 @@ async function main() {
     });
 
     const physicalActivity = await prisma.dailyTasks.upsert({
-        where: { title: "Faire 10 minutes d'activités physique" },
+        where: { title: "Faire 10 minutes d'activité physique" },
         update: {
-            image: '/assets/tasks/3.svg',
-            title: "Faire 10 minutes d'activité physique",
         },
         create: {
-            title: "Faire 10 minutes d'activités physique",
+            title: "Faire 10 minutes d'activité physique",
+            image: '/assets/tasks/3.svg',
             category: "Sport",
             difficulty: 3,
             xp: 40,
@@ -46,10 +45,10 @@ async function main() {
     const readSomePages = await prisma.dailyTasks.upsert({
         where: { title: "Lire quelques pages d'un livre" },
         update: {
-            image: '/assets/tasks/4.svg',
         },
         create: {
             title: "Lire quelques pages d'un livre",
+            image: '/assets/tasks/4.svg',
             category: "Apprentissage",
             difficulty: 2,
             xp: 20,
@@ -59,10 +58,10 @@ async function main() {
     const meditate = await prisma.dailyTasks.upsert({
         where: { title: "Méditer pendant 10 minutes" },
         update: {
-            image: '/assets/tasks/5.svg',
         },
         create: {
             title: "Méditer pendant 10 minutes",
+            image: '/assets/tasks/5.svg',
             category: "Relaxation",
             difficulty: 1,
             xp: 10,
@@ -72,10 +71,10 @@ async function main() {
     const learnSomethingNew = await prisma.dailyTasks.upsert({
         where: { title: "Apprendre quelque chose de nouveau" },
         update: {
-            image: '/assets/tasks/6.svg',
         },
         create: {
             title: "Apprendre quelque chose de nouveau",
+            image: '/assets/tasks/6.svg',
             category: "Apprentissage",
             difficulty: 3,
             xp: 40,
@@ -85,10 +84,10 @@ async function main() {
     const walkOutside = await prisma.dailyTasks.upsert({
         where: { title: "Sortir dehors 30 minutes" },
         update: {
-            image: '/assets/tasks/7.svg',
         },
         create: {
             title: "Sortir dehors 30 minutes",
+            image: '/assets/tasks/7.svg',
             category: "Sport",
             difficulty: 4,
             xp: 60,
@@ -98,10 +97,10 @@ async function main() {
     const stayInTouch = await prisma.dailyTasks.upsert({
         where: { title: "Contacter un proche" },
         update: {
-            image: '/assets/tasks/8.svg',
         },
         create: {
             title: "Contacter un proche",
+            image: '/assets/tasks/8.svg',
             category: "Besoin vitaux",
             difficulty: 1,
             xp: 10,
@@ -122,10 +121,10 @@ async function main() {
     const stretchYourself = await prisma.dailyTasks.upsert({
         where: { title: "Faire des étirements" },
         update: {
-            image: '/assets/tasks/9.svg',
         },
         create: {
             title: "Faire des étirements",
+            image: '/assets/tasks/9.svg',
             category: "Relaxation",
             difficulty: 2,
             xp: 20,
@@ -135,10 +134,10 @@ async function main() {
     const cleanTheHouse = await prisma.dailyTasks.upsert({
         where: { title: "Faire un brin de ménage" },
         update: {
-            image: '/assets/tasks/10.svg',
         },
         create: {
             title: "Faire un brin de ménage",
+            image: '/assets/tasks/10.svg',
             category: "Corvée",
             difficulty: 4,
             xp: 60,
@@ -150,10 +149,10 @@ async function main() {
             title: "Prendre un moment pour s'occuper de soi",
         },
         update: {
-            image: '/assets/tasks/11.svg',
         },
         create: {
             title: "Prendre un moment pour s'occuper de soi",
+            image: '/assets/tasks/11.svg',
             category: "Relaxation",
             difficulty: 3,
             xp: 40,
@@ -165,10 +164,10 @@ async function main() {
             title: "Faire quelque chose de créatif",
         },
         update: {
-            image: '/assets/tasks/12.svg',
         },
         create: {
             title: "Faire quelque chose de créatif",
+            image: '/assets/tasks/12.svg',
             category: "Relaxation",
             difficulty: 4,
             xp: 60,
@@ -180,10 +179,10 @@ async function main() {
             title: "Écouter de la musique",
         },
         update: {
-            image: '/assets/tasks/13.svg',
         },
         create: {
             title: "Écouter de la musique",
+            image: '/assets/tasks/13.svg',
             category: "Relaxation",
             difficulty: 1,
             xp: 10,
@@ -194,10 +193,10 @@ async function main() {
     const hydrationControl = await prisma.success.upsert({
         where: { title: "Maîtrise de l'hydratation" },
         update: {
-            image: "/assets/tasks/1.svg"
         },
         create: {
             title: "Maîtrise de l'hydratation",
+            image: "/assets/tasks/1.svg",
             description: "Boire de l'eau 25 fois",
             amountNeeded: 25,
             successXp: 200,
@@ -208,10 +207,10 @@ async function main() {
     const chef = await prisma.success.upsert({
         where: { title: "Chef·fe cuistot" },
         update: {
-            image: "/assets/tasks/2.svg"
         },
         create: {
             title: "Chef·fe cuistot",
+            image: "/assets/tasks/2.svg",
             description: "Préparer un repas sain et équilibré 15 fois",
             amountNeeded: 15,
             successXp: 200,
@@ -222,10 +221,10 @@ async function main() {
     const bodybuilder = await prisma.success.upsert({
         where: { title: "Bodybuilder" },
         update: {
-            image: "/assets/tasks/3.svg"
         },
         create: {
             title: "Bodybuilder",
+            image: "/assets/tasks/3.svg",
             description: 'Accomplir la tâche "Faire 10 minutes d\'activité physique" 15 fois',
             amountNeeded: 15,
             successXp: 200,
@@ -236,10 +235,10 @@ async function main() {
     const bookworm = await prisma.success.upsert({
         where: { title: "Rat de bibliothèque" },
         update: {
-            image: "/assets/tasks/4.svg"
         },
         create: {
             title: "Rat de bibliothèque",
+            image: "/assets/tasks/4.svg",
             description: 'Accomplir la tâche "Lire quelques pages d\'un livre" 20 fois',
             amountNeeded: 20,
             successXp: 200,
@@ -250,10 +249,10 @@ async function main() {
     const meditationPro = await prisma.success.upsert({
         where: { title: "Pro de la méditation" },
         update: {
-            image: "/assets/tasks/5.svg"
         },
         create: {
             title: "Pro de la méditation",
+            image: "/assets/tasks/5.svg",
             description: 'Accomplir la tâche "Méditer 10 minutes" 25 fois',
             amountNeeded: 25,
             successXp: 200,
@@ -264,10 +263,10 @@ async function main() {
     const curiousScholar = await prisma.success.upsert({
         where: { title: "Savant curieux.se" },
         update: {
-            image: "/assets/tasks/6.svg"
         },
         create: {
             title: "Savant curieux.se",
+            image: "/assets/tasks/6.svg",
             description: "Apprendre quelque chose de nouveau 15 fois",
             amountNeeded: 15,
             successXp: 200,
@@ -278,10 +277,10 @@ async function main() {
     const closeToNature = await prisma.success.upsert({
         where: { title: "Proche de la Nature" },
         update: {
-            image: "/assets/tasks/7.svg"
         },
         create: {
             title: "Proche de la Nature",
+            image: "/assets/tasks/7.svg",
             description: 'Accomplir la tâche "Sortir dehors 30 minutes" 10 fois',
             amountNeeded: 10,
             successXp: 200,
@@ -292,10 +291,10 @@ async function main() {
     const perfectFriend = await prisma.success.upsert({
         where: { title: "L'Ami·e idéal·e" },
         update: {
-            image: "/assets/tasks/8.svg"
         },
         create: {
             title: "L'Ami·e idéal·e",
+            image: "/assets/tasks/8.svg",
             description: "Prendre contact avec un ami ou un membre de la famille 25 fois",
             amountNeeded: 25,
             successXp: 200,
@@ -306,10 +305,10 @@ async function main() {
     const stretchinator = await prisma.success.upsert({
         where: { title: "Stretchinator" },
         update: {
-            image: "/assets/tasks/9.svg"
         },
         create: {
             title: "Stretchinator",
+            image: "/assets/tasks/9.svg",
             description: 'Accomplir la tâche "S\'étirer pendant 5 minutes" 20 fois',
             amountNeeded: 20,
             successXp: 200,
@@ -320,10 +319,10 @@ async function main() {
     const broomMaster = await prisma.success.upsert({
         where: { title: "Domination du balai" },
         update: {
-            image: "/assets/tasks/10.svg"
         },
         create: {
             title: "Domination du balai",
+            image: "/assets/tasks/10.svg",
             description: "Faire le ménage 10 fois",
             amountNeeded: 10,
             successXp: 200,
@@ -334,10 +333,10 @@ async function main() {
     const relaxationGuru = await prisma.success.upsert({
         where: { title: "Gourou de la Relaxation" },
         update: {
-            image: "/assets/tasks/11.svg"
         },
         create: {
             title: "Gourou de la Relaxation",
+            image: "/assets/tasks/11.svg",
             description: "Prendre un moment pour soi 15 fois",
             amountNeeded: 15,
             successXp: 200,
@@ -348,10 +347,10 @@ async function main() {
     const virtuoso = await prisma.success.upsert({
         where: { title: "Virtuose" },
         update: {
-            image: "/assets/tasks/12.svg"
         },
         create: {
             title: "Virtuose",
+            image: "/assets/tasks/12.svg",
             description: "Pratiquer une compétence artistique 10 fois",
             amountNeeded: 10,
             successXp: 200,
@@ -362,10 +361,10 @@ async function main() {
     const absolutePitch = await prisma.success.upsert({
         where: { title: "Oreille absolue" },
         update: {
-            image: "/assets/tasks/13.svg"
         },
         create: {
             title: "Oreille absolue",
+            image: "/assets/tasks/13.svg",
             description: "Avoir écouté de la musique 25 fois",
             amountNeeded: 25,
             successXp: 200,
@@ -376,10 +375,10 @@ async function main() {
     const questMaster = await prisma.success.upsert({
         where: { title: "Quest Master" },
         update: {
-            image: "/assets/tasks/14.svg"
         },
         create: {
             title: "Quest Master",
+            image: "/assets/tasks/14.svg",
             description: "Finir un total de 100 tâches quotidiennes",
             amountNeeded: 100,
             successXp: 300,
@@ -390,10 +389,10 @@ async function main() {
     const selfRuling = await prisma.success.upsert({
         where: { title: "Autonome" },
         update: {
-            image: "/assets/tasks/15.svg"
         },
         create: {
             title: "Autonome",
+            image: "/assets/tasks/15.svg",
             description: "Créer et compléter une première tâche personnalisée",
             amountNeeded: 1,
             successXp: 20,
@@ -404,10 +403,10 @@ async function main() {
     const perfectionist = await prisma.success.upsert({
         where: { title: "Perfectionniste" },
         update: {
-            image: "/assets/tasks/16.svg"
         },
         create: {
             title: "Perfectionniste",
+            image: "/assets/tasks/16.svg",
             description: "Terminer toutes les tâches quotidiennes d'une journée",
             amountNeeded: 1,
             successXp: 100,
@@ -418,10 +417,10 @@ async function main() {
     const buddingBond = await prisma.success.upsert({
         where: { title: "Lien naissant" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Lien naissant",
+            image: "/assets/tasks/17.svg",
             description: "Passer son Yol au niveau 3",
             amountNeeded: 1,
             successXp: 50,
@@ -432,10 +431,10 @@ async function main() {
     const growingComplicity = await prisma.success.upsert({
         where: { title: "Complicité grandissante" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Complicité grandissante",
+            image: "/assets/tasks/17.svg",
             description: "Passer son Yol au niveau 10",
             amountNeeded: 1,
             successXp: 50,
@@ -446,10 +445,10 @@ async function main() {
     const faithfulCompanion = await prisma.success.upsert({
         where: { title: "Compagnon fidèle" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Compagnon fidèle",
+            image: "/assets/tasks/17.svg",
             description: "Passer son Yol au niveau 20",
             amountNeeded: 1,
             successXp: 50,
@@ -460,10 +459,10 @@ async function main() {
     const unshakableFriendship = await prisma.success.upsert({
         where: { title: "Amitié inébranlable" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Amitié inébranlable",
+            image: "/assets/tasks/17.svg",
             description: "Passer son Yol au niveau 30",
             amountNeeded: 1,
             successXp: 50,
@@ -474,10 +473,10 @@ async function main() {
     const eternalFriendship = await prisma.success.upsert({
         where: { title: "Amitié éternelle" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Amitié éternelle",
+            image: "/assets/tasks/17.svg",
             description: "Passer son Yol au niveau 40",
             amountNeeded: 1,
             successXp: 0,
@@ -488,10 +487,10 @@ async function main() {
     const hatching = await prisma.success.upsert({
         where: { title: "Sorti de l'oeuf" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Sorti de l'oeuf",
+            image: "/assets/tasks/17.svg",
             description: "Faire éclore son Yol",
             amountNeeded: 1,
             successXp: 10,
@@ -502,10 +501,10 @@ async function main() {
     const miniYol = await prisma.success.upsert({
         where: { title: "Mini Yol" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Mini Yol",
+            image: "/assets/tasks/17.svg",
             description: "Evoluer une première fois son Yol",
             amountNeeded: 1,
             successXp: 50,
@@ -516,10 +515,10 @@ async function main() {
     const greatYol = await prisma.success.upsert({
         where: { title: "Grand Yol" },
         update: {
-            image: "/assets/tasks/17.svg"
         },
         create: {
             title: "Grand Yol",
+            image: "/assets/tasks/17.svg",
             description: "Evoluer une seconde fois son Yol",
             amountNeeded: 1,
             successXp: 50,
