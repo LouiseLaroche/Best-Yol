@@ -4,8 +4,14 @@ import yolController from "../controllers/Yol";
 
 const router: Router = express.Router();
 
+//* POST
 router.post("/create", authToken, yolController.createYol);
-router.get("/:id", authToken, yolController.getOneYol);
+
+//* GET
+router.get("/:yolId", authToken, yolController.getOneYol);
 router.get("/user/:userId", authToken, yolController.getOneYolByUserId);
+
+//* PATCH
+router.patch("/evolve/:yolId", authToken, yolController.evolve);
 
 export default router;
