@@ -16,7 +16,7 @@ export const createUserCustomTask = (req: Request, res: Response) => {
     }
 
     if (!title) {
-        res.status(400).json({ erreur: "le titre de la tâche est manquant" });
+        res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
         return;
     }
 
@@ -50,7 +50,7 @@ export const changeTitleCustomTask = async (req: Request, res: Response) => {
     }
 
     if (!title) {
-        res.status(400).json({ erreur: "le titre de la tâche est manquant" });
+        res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
         return;
     }
 
