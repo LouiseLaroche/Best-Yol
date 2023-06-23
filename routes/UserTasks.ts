@@ -10,6 +10,7 @@ router.post("/:userId", authToken, userTasksController.createUserCustomTask);
 router.put("/:taskId", authToken, userTasksController.changeTitleCustomTask);
 router.put("/daily/active", authToken, userTasksController.removeActiveDaily);
 router.patch("/daily/:userTaskId", authToken, userTasksController.validateDailyTask);
+router.patch("/custom/:userTaskId", authToken, userTasksController.validateCustomTask);
 router.delete("/:taskId", authToken, userTasksController.deleteCustomTask);
 router.post("/daily/:userId", authToken, userTasksController.createUserDailyTasks);
 

@@ -172,6 +172,10 @@ export const validateDailyTask = async (req: Request, res: Response) => {
             },
         });
 
+        if (!userTask) {
+            return res.status(404).json({ error: "Tâche non trouvée 😕" });
+        }
+
         await prisma.yol.update({
             where: {
                 id: yolId,
@@ -182,9 +186,122 @@ export const validateDailyTask = async (req: Request, res: Response) => {
                 },
             },
         });
+
+        const successId: number | null | undefined = userTask?.dailyTask?.successId;
+        const userId = userTask?.userId;
+
+        if (successId !== null) {
+            const userSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    successId: successId as number,
+                    isCompleted: false,
+                    userId: userId,
+                },
+            });
+
+            if (userSuccess) {
+                await prisma.userSuccess.update({
+                    where: {
+                        id: userSuccess.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
+        }
+
+        const updatedTask = await prisma.userTasks.update({
+            where: {
+                id: userTask?.id,
+            },
+            data: {
+                isCompleted: true,
+            },
+        });
+
+        return res.status(200).json({ message: "Tâche validée 🥳🎉", yolXpGain: userTask?.dailyTask?.xp, updatedTask });
     } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ error: "An internal server error occurred" });
+        return res.status(500).json({ error });
+    }
+};
+
+export const validateCustomTask = async (req: Request, res: Response) => {
+    const userTaskId: string = req.params.userTaskId;
+
+    try {
+        const userTask = await prisma.userTasks.findUnique({
+            where: {
+                id: parseInt(userTaskId, 10),
+            },
+        });
+
+        if (!userTask) {
+            return res.status(404).json({ error: "Tâche non trouvée 😕" });
+        }
+
+        if (!userTask.isDaily) {
+            if (userTask.isCompleted) {
+                return res.status(400).json({ error: "Tâche déjà complétée" });
+            }
+
+            const firstTimeCompletingCustomTask = await prisma.userTasks.count({
+                where: {
+                    userId: userTask.userId,
+                    isDaily: false,
+                    isCompleted: true,
+                },
+            });
+            console.log(firstTimeCompletingCustomTask);
+
+            if (firstTimeCompletingCustomTask !== 0) {
+                await prisma.userTasks.update({
+                    where: {
+                        id: parseInt(userTaskId, 10),
+                    },
+                    data: {
+                        isCompleted: true,
+                    },
+                });
+
+                return res.json({ message: "Tâche complétée" });
+            } else {
+                const successId: number = 15;
+                const successToValidate = await prisma.userSuccess.findFirst({
+                    where: {
+                        successId: successId,
+                        userId: userTask.userId,
+                    },
+                });
+
+                await prisma.userSuccess.update({
+                    where: {
+                        id: successToValidate?.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+
+                await prisma.userTasks.update({
+                    where: {
+                        id: parseInt(userTaskId, 10),
+                    },
+                    data: {
+                        isCompleted: true,
+                    },
+                });
+                return res.json({ message: "Tâche complétée" });
+            }
+        } else {
+            return res.status(400).json({ error: "Requête invalide" });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: error });
     }
 };
 
@@ -244,4 +361,5 @@ export default {
     deleteCustomTask,
     removeActiveDaily,
     validateDailyTask,
+    validateCustomTask,
 };
