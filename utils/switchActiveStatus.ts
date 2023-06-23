@@ -3,7 +3,53 @@ import { getRandomElements } from "./getRandomElements";
 
 const prisma = new PrismaClient();
 
-export async function newActiveDaily(count: number): Promise<DailyTasks[]> {
+export async function newActiveDaily(count: number) {
+    const currentDate: Date = new Date();
+
+    const activeTasks = await prisma.dailyTasks.findMany({
+        where: {
+            isActive: true,
+        },
+    });
+
+    if (activeTasks.length === 0) {
+        const tasks: DailyTasks[] = await prisma.dailyTasks.findMany();
+        const selectedTasks: DailyTasks[] = getRandomElements(tasks, count);
+
+        await prisma.dailyTasks.updateMany({
+            where: {
+                id: {
+                    in: selectedTasks.map((task) => task.id),
+                },
+            },
+            data: {
+                isActive: true,
+                lastAssignDate: currentDate,
+            },
+        });
+
+        return;
+    }
+
+    const tasksToUpdate = activeTasks.filter(
+        (task) => (task.lastAssignDate && new Date(task.lastAssignDate) < currentDate) || task.lastAssignDate === null
+    );
+
+    if (tasksToUpdate.length === 0) {
+        return;
+    }
+
+    await prisma.dailyTasks.updateMany({
+        where: {
+            id: {
+                in: activeTasks.map((task) => task.id),
+            },
+        },
+        data: {
+            isActive: false,
+        },
+    });
+
     const tasks: DailyTasks[] = await prisma.dailyTasks.findMany();
     const selectedTasks: DailyTasks[] = getRandomElements(tasks, count);
 
@@ -15,27 +61,9 @@ export async function newActiveDaily(count: number): Promise<DailyTasks[]> {
         },
         data: {
             isActive: true,
+            lastAssignDate: currentDate,
         },
     });
 
-    const updatedTasks = await prisma.dailyTasks.findMany({
-        where: {
-            isActive: true,
-        },
-    });
-
-    return updatedTasks;
-}
-
-export async function reverseIsActiveDaily(): Promise<string> {
-    await prisma.dailyTasks.updateMany({
-        where: {
-            isActive: true,
-        },
-        data: {
-            isActive: false,
-        },
-    });
-
-    return "Les tâches quotidiennes actives ont bien été désactivée 🥳🎉";
+    return;
 }
