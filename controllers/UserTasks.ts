@@ -142,7 +142,6 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
                     isCompleted: false,
                     completedAt: null,
                     userId: parseInt(userId, 10),
-                    createdAt: today,
                     dailyTaskId: task.id,
                 },
                 include: {
@@ -160,7 +159,33 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
 };
 
 export const validateDailyTask = async (req: Request, res: Response) => {
-    //
+    const { yolId } = req.body;
+    const userTaskId: string = req.params.userTaskId;
+
+    try {
+        const userTask = await prisma.userTasks.findUnique({
+            where: {
+                id: parseInt(userTaskId, 10),
+            },
+            include: {
+                dailyTask: true,
+            },
+        });
+
+        await prisma.yol.update({
+            where: {
+                id: yolId,
+            },
+            data: {
+                xp: {
+                    increment: userTask?.dailyTask?.xp,
+                },
+            },
+        });
+    } catch (error) {
+        console.error("Error:", error);
+        return res.status(500).json({ error: "An internal server error occurred" });
+    }
 };
 
 export const removeActiveDaily = async (req: Request, res: Response) => {
@@ -218,4 +243,5 @@ export default {
     changeTitleCustomTask,
     deleteCustomTask,
     removeActiveDaily,
+    validateDailyTask,
 };
