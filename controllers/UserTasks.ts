@@ -159,6 +159,10 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
     }
 };
 
+export const validateDailyTask = async (req: Request, res: Response) => {
+    //
+};
+
 export const removeActiveDaily = async (req: Request, res: Response) => {
     try {
         await prisma.dailyTasks.updateMany({
