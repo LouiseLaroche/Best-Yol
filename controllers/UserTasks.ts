@@ -12,7 +12,7 @@ export const createUserCustomTask = (req: Request, res: Response) => {
 
     if (isNaN(parseInt(userId, 10))) {
         res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     if (!title) {
@@ -46,7 +46,7 @@ export const changeTitleCustomTask = async (req: Request, res: Response) => {
 
     if (isNaN(parseInt(taskId, 10))) {
         res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     if (!title) {
@@ -75,7 +75,7 @@ export const deleteCustomTask = async (req: Request, res: Response) => {
 
     if (isNaN(parseInt(taskId, 10))) {
         res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     try {
@@ -96,7 +96,7 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
 
     if (isNaN(parseInt(userId, 10))) {
         res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     const today: Date = new Date();
@@ -196,12 +196,17 @@ export const validateDailyTask = async (req: Request, res: Response) => {
 
     if (isNaN(yolId)) {
         res.status(400).json({ erreur: "yolId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     if (isNaN(parseInt(userTaskId, 10))) {
         res.status(400).json({ erreur: "Le paramètre userTaskId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
+    }
+
+    if (!yolId) {
+        res.status(400).json({ erreur: "yolId est absent du corps de la requête" });
+        return;
     }
 
     try {
@@ -275,7 +280,7 @@ export const validateCustomTask = async (req: Request, res: Response) => {
 
     if (isNaN(parseInt(userTaskId, 10))) {
         res.status(400).json({ erreur: "Le paramètre userTaskId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     try {
@@ -373,7 +378,7 @@ export const getUserTasks = async (req: Request, res: Response) => {
 
     if (isNaN(parseInt(userId, 10))) {
         res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
-        return; // Return early to prevent further execution
+        return;
     }
 
     try {
