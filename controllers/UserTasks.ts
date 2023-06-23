@@ -254,7 +254,6 @@ export const validateCustomTask = async (req: Request, res: Response) => {
                     isCompleted: true,
                 },
             });
-            console.log(firstTimeCompletingCustomTask);
 
             if (firstTimeCompletingCustomTask !== 0) {
                 await prisma.userTasks.update({
