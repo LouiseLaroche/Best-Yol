@@ -9,73 +9,89 @@ const prisma = new PrismaClient();
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
-    const existingUsername = await prisma.users.findUnique({ where: { username } });
-    const existingEmail = await prisma.users.findUnique({ where: { email } });
+    try {
+        const existingUsername = await prisma.users.findUnique({ where: { username } });
+        const existingEmail = await prisma.users.findUnique({ where: { email } });
 
-    if (existingUsername != null) {
-        return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
-    }
+        if (existingUsername != null) {
+            return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
+        }
 
-    if (existingEmail != null) {
-        return res.status(400).json({ erreur: "L'email existe déjà" });
-    }
+        if (existingEmail != null) {
+            return res.status(400).json({ erreur: "L'email existe déjà" });
+        }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    prisma.users
-        .create({
+        const user = await prisma.users.create({
             data: {
                 username,
                 email,
                 password: hashedPassword,
                 pp: "/assets/avatars/Icon1.png",
             },
-        })
-        .then((user) => {
-            userSuccess.createUserSuccess(user.id);
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                pp: true,
+                banner: true,
+                createdAt: true,
+            },
+        });
 
-            const { password, ...userWithoutPassword } = user;
-            res.status(201).json({
-                user: userWithoutPassword,
-                message: "Inscription réussie! 🥳🎊",
-                token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
-                    expiresIn: "12h",
-                }),
-            });
-        })
-        .catch((error) => res.status(500).json({ erreur: error }));
+        await userSuccess.createUserSuccess(user.id);
+
+        return res.status(201).json({
+            user,
+            message: "Inscription réussie! 🥳🎊",
+            token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
+                expiresIn: "12h",
+            }),
+        });
+    } catch (error) {
+        return res.status(500).json({ erreur: error });
+    }
 };
 
 export const login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
-    prisma.users
-        .findUnique({ where: { username } })
-        .then((user) => {
-            if (user === null) {
-                return res.status(401).json({ erreur: "Identifiants non valides 😢" });
-            }
+    try {
+        const user = await prisma.users.findUnique({
+            where: { username },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                pp: true,
+                createdAt: true,
+                password: true,
+            },
+        });
 
-            bcrypt
-                .compare(password, user.password)
-                .then((passwordMatch) => {
-                    if (passwordMatch) {
-                        const { password, ...userWithoutPassword } = user;
+        if (user === null) {
+            return res.status(401).json({ erreur: "Identifiants non valides 😢" });
+        }
 
-                        return res.status(200).json({
-                            user: userWithoutPassword,
-                            message: "Connexion réussie! 🥳",
-                            token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
-                                expiresIn: "12h",
-                            }),
-                        });
-                    } else {
-                        return res.status(401).json({ erreur: "Identifiants non valides 😢" });
-                    }
-                })
-                .catch((error) => res.status(500).json({ erreur: error }));
-        })
-        .catch((error) => res.status(500).json({ erreur: error }));
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (passwordMatch) {
+            const { password: _, ...userWithoutPassword } = user;
+
+            return res.status(200).json({
+                user: userWithoutPassword,
+                message: "Connexion réussie! 🥳",
+                token: jwt.sign({ userId: user.id }, process.env.JWT_TOKEN as string, {
+                    expiresIn: "12h",
+                }),
+            });
+        } else {
+            return res.status(401).json({ erreur: "Identifiants non valides 😢" });
+        }
+    } catch (error) {
+        return res.status(500).json({ erreur: error });
+    }
 };
 
 export const getUser = async (req: Request, res: Response) => {
@@ -91,6 +107,7 @@ export const getUser = async (req: Request, res: Response) => {
                 banner: user.banner,
                 email: user.email,
                 username: user.username,
+                createdAt: user.createdAt,
             });
         })
         .catch((error) => res.status(404).json({ error }));
