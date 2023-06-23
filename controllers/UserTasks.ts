@@ -88,6 +88,42 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
             return;
         }
 
+        const expiredDailytasks = await prisma.userTasks.findFirst({
+            where: {
+                userId: parseInt(userId, 10),
+                isDaily: true,
+                createdAt: {
+                    lt: startOfToday,
+                },
+            },
+        });
+
+        if (expiredDailytasks) {
+            const incompleteTasks = await prisma.userTasks.findMany({
+                where: {
+                    userId: parseInt(userId, 10),
+                    isDaily: true,
+                    isCompleted: false,
+                    createdAt: {
+                        lt: startOfToday,
+                    },
+                },
+            });
+
+            if (incompleteTasks.length > 0) {
+                await prisma.userTasks.deleteMany({
+                    where: {
+                        userId: parseInt(userId, 10),
+                        isDaily: true,
+                        isCompleted: false,
+                        createdAt: {
+                            lt: startOfToday,
+                        },
+                    },
+                });
+            }
+        }
+
         await newActiveDaily(6);
 
         const tasks: DailyTasks[] = await prisma.dailyTasks.findMany({
