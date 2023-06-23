@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { DailyTasks, PrismaClient, UserTasks } from "@prisma/client";
 import { startOfDay, endOfDay } from "date-fns";
 import { getRandomElements } from "../utils/getRandomElements";
-import { newActiveDaily, reverseIsActiveDaily } from "../utils/switchActiveStatus";
+import { newActiveDaily } from "../utils/switchActiveStatus";
 
 const prisma = new PrismaClient();
 
@@ -44,7 +44,7 @@ export const changeTitleCustomTask = (req: Request, res: Response) => {
             },
         })
         .then((updatedTask: Object) => {
-            res.status(200).json({ updatedTask, message: "tâche modifiée 🥳🎉" });
+            res.status(200).json({ updatedTask, message: "Tâche modifiée 🥳🎉" });
         })
         .catch((error: Object) => {
             res.status(500).json({ erreur: "Erreur lors du changement de titre 😕", error });
@@ -71,9 +71,6 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
     const startOfToday: number | Date = startOfDay(today);
     const endOfToday: number | Date = endOfDay(today);
 
-    let activeTasksAssigned: boolean = false;
-    let lastAssignedDate: Date | null = new Date();
-
     try {
         const existingDailyTasks = await prisma.userTasks.findFirst({
             where: {
@@ -87,66 +84,41 @@ export const createUserDailyTasks = async (req: Request, res: Response) => {
         });
 
         if (existingDailyTasks) {
-            res.status(500).json({ erreur: "Les tâches quotidiennes ont déjà été assignées à cet utilisateur aujourd'hui 😕" });
+            res.status(500).json({ erreur: "L'utilisateur a déjà des tâches quotidiennes pour cette date 😕" });
             return;
         }
 
-        const currentDate = startOfDay(new Date());
+        await newActiveDaily(6);
 
-        if (!lastAssignedDate || currentDate.getTime() > lastAssignedDate.getTime()) {
-            activeTasksAssigned = false;
-            lastAssignedDate = currentDate;
-        }
+        const tasks: DailyTasks[] = await prisma.dailyTasks.findMany({
+            where: {
+                isActive: true,
+            },
+        });
 
-        if (!activeTasksAssigned) {
-            activeTasksAssigned = true;
+        const userTasks: UserTasks[] = [];
 
-            const updatedTasks = await newActiveDaily(6);
-
-            const createdTasks: UserTasks[] = [];
-            for (const task of updatedTasks) {
-                const createdTask = await prisma.userTasks.create({
-                    data: {
-                        userId: parseInt(userId, 10),
-                        title: task.title,
-                        isDaily: true,
-                        createdAt: new Date(),
-                        isCompleted: false,
-                        completedAt: null,
-                        dailyTaskId: task.id,
-                    },
-                });
-                createdTasks.push(createdTask);
-            }
-
-            res.status(200).json({ message: "Tâches quotidiennes assignées 🥳🎉", createdTasks });
-        } else {
-            const updatedTasks = await prisma.dailyTasks.findMany({
-                where: {
-                    isActive: true,
+        for (const task of tasks) {
+            const userTask: UserTasks = await prisma.userTasks.create({
+                data: {
+                    title: task.title,
+                    isDaily: true,
+                    isCompleted: false,
+                    completedAt: null,
+                    userId: parseInt(userId, 10),
+                    createdAt: today,
+                    dailyTaskId: task.id,
+                },
+                include: {
+                    dailyTask: true,
                 },
             });
 
-            const createdTasks: UserTasks[] = [];
-            for (const task of updatedTasks) {
-                const createdTask = await prisma.userTasks.create({
-                    data: {
-                        userId: parseInt(userId, 10),
-                        title: task.title,
-                        isDaily: true,
-                        createdAt: new Date(),
-                        isCompleted: false,
-                        completedAt: null,
-                        dailyTaskId: task.id,
-                    },
-                });
-
-                createdTasks.push(createdTask);
-            }
-
-            res.status(200).json({ message: "Tâches quotidiennes assignées 🥳🎉" });
+            userTasks.push(userTask);
         }
-    } catch (error: any) {
+
+        res.status(200).json({ userTasks, message: "Tâches quotidiennes assignées 🥳🎉" });
+    } catch (error) {
         res.status(500).json({ erreur: error });
     }
 };
