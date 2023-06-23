@@ -182,9 +182,45 @@ export const validateDailyTask = async (req: Request, res: Response) => {
                 },
             },
         });
+
+        const successId: number | null | undefined = userTask?.dailyTask?.successId;
+        const userId = userTask?.userId;
+
+        if (successId !== null) {
+            const userSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    successId: successId as number,
+                    isCompleted: false,
+                    userId: userId,
+                },
+            });
+
+            if (userSuccess) {
+                await prisma.userSuccess.update({
+                    where: {
+                        id: userSuccess.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
+        }
+
+        const updatedTask = await prisma.userTasks.update({
+            where: {
+                id: userTask?.id,
+            },
+            data: {
+                isCompleted: true,
+            },
+        });
+
+        return res.status(200).json({ message: "Tâche validée 🥳🎉", yolXpGain: userTask?.dailyTask?.xp, updatedTask });
     } catch (error) {
-        console.error("Error:", error);
-        return res.status(500).json({ error: "An internal server error occurred" });
+        return res.status(500).json({ error });
     }
 };
 
