@@ -7,22 +7,20 @@ import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 const prisma = new PrismaClient();
 
-export const createUserCustomTask = (req: AuthenticatedRequest, res: Response) => {
+export const createUserCustomTask = async (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;
     const { title }: { title: string } = req.body;
 
     if (isNaN(parseInt(userId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
-        return;
+        return res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
     }
 
     if (!title) {
-        res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
-        return;
+        return res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
     }
 
-    prisma.userTasks
-        .create({
+    try {
+        const userTask = await prisma.userTasks.create({
             data: {
                 title,
                 isDaily: false,
@@ -32,13 +30,12 @@ export const createUserCustomTask = (req: AuthenticatedRequest, res: Response) =
                 userId: parseInt(userId, 10),
                 dailyTaskId: null,
             },
-        })
-        .then((userTask: Object) => {
-            res.status(201).json({ userTask, message: "Tâche créée 🥳🎉" });
-        })
-        .catch((error: Object) => {
-            res.status(500).json({ erreur: "Erreur lors de la création de la tâche 😕", error });
         });
+
+        return res.status(201).json({ userTask, message: "Tâche créée 🥳🎉" });
+    } catch (error: any) {
+        return res.status(500).json({ erreur: "Erreur lors de la création de la tâche 😕", error });
+    }
 };
 
 export const changeTitleCustomTask = async (req: Request, res: Response) => {
@@ -66,7 +63,7 @@ export const changeTitleCustomTask = async (req: Request, res: Response) => {
         });
 
         res.status(200).json({ updatedTask, message: "Tâche modifiée 🥳🎉" });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ erreur: "Erreur lors du changement de titre 😕", error });
     }
 };
@@ -87,7 +84,7 @@ export const deleteCustomTask = async (req: Request, res: Response) => {
         });
 
         res.status(200).json({ message: "Tâche supprimée 🔫" });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ erreur: "Erreur lors de la suppression de la tâche 😕", error });
     }
 };
@@ -186,7 +183,7 @@ export const createUserDailyTasks = async (req: AuthenticatedRequest, res: Respo
         }
 
         res.status(200).json({ userTasks, message: "Tâches quotidiennes assignées 🥳🎉" });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ erreur: error });
     }
 };
@@ -271,7 +268,7 @@ export const validateDailyTask = async (req: Request, res: Response) => {
         });
 
         return res.status(200).json({ message: "Tâche validée 🥳🎉", yolXpGain: userTask?.dailyTask?.xp, updatedTask });
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ error });
     }
 };
@@ -352,7 +349,7 @@ export const validateCustomTask = async (req: Request, res: Response) => {
         } else {
             return res.status(400).json({ error: "Requête invalide" });
         }
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ error: error });
     }
 };
@@ -367,7 +364,7 @@ export const removeActiveDaily = async (req: Request, res: Response) => {
                 isActive: false,
             },
         });
-    } catch (error) {
+    } catch (error: any) {
         return res.status(400).json({ erreur: error });
     }
 
@@ -404,7 +401,7 @@ export const getUserTasks = async (req: AuthenticatedRequest, res: Response) => 
         });
 
         res.status(200).json({ customTasks, dailyTasks });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({
             erreur: "Une erreur est survenue lors de la récupération des tâches de l'utilisateur 😕",
             error,

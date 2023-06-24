@@ -51,7 +51,7 @@ export const signup = async (req: Request, res: Response) => {
                 expiresIn: "12h",
             }),
         });
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ erreur: error });
     }
 };
@@ -91,7 +91,7 @@ export const login = async (req: Request, res: Response) => {
         } else {
             return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ erreur: error });
     }
 };
@@ -119,7 +119,7 @@ export const getUser = async (req: AuthenticatedRequest, res: Response) => {
             username: user.username,
             createdAt: user.createdAt,
         });
-    } catch (error) {
+    } catch (error: any) {
         res.status(500).json({ erreur: error });
     }
 };
