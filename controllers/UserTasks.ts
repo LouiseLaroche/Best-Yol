@@ -3,10 +3,11 @@ import { DailyTasks, PrismaClient, UserTasks } from "@prisma/client";
 import { startOfDay, endOfDay } from "date-fns";
 import { getRandomElements } from "../utils/getRandomElements";
 import { newActiveDaily } from "../utils/switchActiveStatus";
+import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 const prisma = new PrismaClient();
 
-export const createUserCustomTask = (req: Request, res: Response) => {
+export const createUserCustomTask = (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;
     const { title }: { title: string } = req.body;
 
@@ -91,7 +92,7 @@ export const deleteCustomTask = async (req: Request, res: Response) => {
     }
 };
 
-export const createUserDailyTasks = async (req: Request, res: Response) => {
+export const createUserDailyTasks = async (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;
 
     if (isNaN(parseInt(userId, 10))) {
@@ -373,7 +374,7 @@ export const removeActiveDaily = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "Les tâches quotidiennes actives ont bien été désactivée 🥳🎉" });
 };
 
-export const getUserTasks = async (req: Request, res: Response) => {
+export const getUserTasks = async (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;
 
     if (isNaN(parseInt(userId, 10))) {
