@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userSuccess from "../controllers/UserSuccess";
-
 import { PrismaClient } from "@prisma/client";
+
+import { AuthenticatedRequest } from "../middlewares/idValidation";
+
 const prisma = new PrismaClient();
 
 export const signup = async (req: Request, res: Response) => {
@@ -49,7 +51,7 @@ export const signup = async (req: Request, res: Response) => {
                 expiresIn: "12h",
             }),
         });
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ erreur: error });
     }
 };
@@ -89,28 +91,37 @@ export const login = async (req: Request, res: Response) => {
         } else {
             return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
-    } catch (error) {
+    } catch (error: any) {
         return res.status(500).json({ erreur: error });
     }
 };
 
-export const getUser = async (req: Request, res: Response) => {
-    prisma.users
-        .findUnique({ where: { id: parseInt(req.params.id, 10) } })
-        .then((user) => {
-            if (user === null) {
-                return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
-            }
-            res.status(200).json({
-                id: user.id,
-                pp: user.pp,
-                banner: user.banner,
-                email: user.email,
-                username: user.username,
-                createdAt: user.createdAt,
-            });
-        })
-        .catch((error) => res.status(404).json({ error }));
+export const getUser = async (req: AuthenticatedRequest, res: Response) => {
+    const userId: string = req.params.userId;
+
+    if (isNaN(parseInt(userId, 10))) {
+        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
+        return;
+    }
+
+    try {
+        const user = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
+
+        if (user === null) {
+            return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
+        }
+
+        res.status(200).json({
+            id: user.id,
+            pp: user.pp,
+            banner: user.banner,
+            email: user.email,
+            username: user.username,
+            createdAt: user.createdAt,
+        });
+    } catch (error: any) {
+        res.status(500).json({ erreur: error });
+    }
 };
 
 export default {
