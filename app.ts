@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request, Response, Router } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 
 // routes import
 import userRoutes from "./routes/User";
@@ -10,8 +10,6 @@ import speciesRoutes from "./routes/Species";
 
 // call express method to create express app
 const app: Express = express();
-
-// connect to server ?
 
 // use express json method to translate json from client 🙃
 app.use(express.json());
