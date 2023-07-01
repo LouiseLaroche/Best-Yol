@@ -2,11 +2,10 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import userSuccess from "../controllers/UserSuccess";
-import { PrismaClient } from "@prisma/client";
 
 import { AuthenticatedRequest } from "../middlewares/idValidation";
 
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
