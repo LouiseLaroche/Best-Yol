@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { Species } from "@prisma/client";
 
-import prisma from "../utils/prismaClient";
+import { prisma, Species } from "../utils/prismaClient";
 
 export const getAllSpecies = async (_req: Request, res: Response) => {
     try {

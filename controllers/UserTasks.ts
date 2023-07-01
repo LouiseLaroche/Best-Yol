@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { DailyTasks, UserTasks } from "@prisma/client";
 import { startOfDay, endOfDay } from "date-fns";
 import { newActiveDaily } from "../utils/switchActiveStatus";
 import { AuthenticatedRequest } from "../middlewares/idValidation";
 
-import prisma from "../utils/prismaClient";
+import { prisma, DailyTasks, UserTasks } from "../utils/prismaClient";
 
 export const createUserCustomTask = async (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import prisma from "../utils/prismaClient";
+import { prisma } from "../utils/prismaClient";
 
 //* POST
 export const createYol = async (req: Request, res: Response) => {

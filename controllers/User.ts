@@ -5,7 +5,7 @@ import userSuccess from "../controllers/UserSuccess";
 
 import { AuthenticatedRequest } from "../middlewares/idValidation";
 
-import prisma from "../utils/prismaClient";
+import { prisma } from "../utils/prismaClient";
 
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
