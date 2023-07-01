@@ -1,7 +1,6 @@
-import { PrismaClient, DailyTasks, UserTasks } from "@prisma/client";
 import { getRandomElements } from "./getRandomElements";
 
-const prisma = new PrismaClient();
+import { prisma, DailyTasks } from "../utils/prismaClient";
 
 export async function newActiveDaily(count: number) {
     const currentDate: Date = new Date();
