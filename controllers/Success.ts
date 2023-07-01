@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { PrismaClient, Success } from "@prisma/client";
+import { Success } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import prisma from "../utils/prismaClient";
 
 export const getAllSuccess = async (_req: Request, res: Response) => {
     try {
