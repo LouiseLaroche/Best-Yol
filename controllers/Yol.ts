@@ -65,14 +65,14 @@ export const getOneYol = async (req: Request, res: Response) => {
 };
 
 export const getOneYolByUserId = async (req: Request, res: Response) => {
-    const yolId: string = req.params.yolId;
+    const userId: string = req.params.userId;
 
-    if (!yolId) {
-        res.status(400).json({ erreur: "yolId est absent des paramètres de la requête" });
+    if (!userId) {
+        res.status(400).json({ erreur: "userId est absent des paramètres de la requête" });
         return;
     }
 
-    if (isNaN(parseInt(yolId, 10))) {
+    if (isNaN(parseInt(userId, 10))) {
         res.status(400).json({ erreur: "yolId doit être un nombre valide" });
         return;
     }
@@ -80,7 +80,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
     try {
         const yol = await prisma.yol.findMany({
             where: {
-                userId: parseInt(yolId, 10),
+                userId: parseInt(userId, 10),
             },
             include: {
                 species: true,
