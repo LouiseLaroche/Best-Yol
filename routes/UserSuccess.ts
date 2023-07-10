@@ -7,6 +7,6 @@ import userSuccessController from "../controllers/UserSuccess";
 import idValidation from "../middlewares/idValidation";
 
 router.get("/:userId", [authToken, idValidation], userSuccessController.getAllUserSuccessByUserId);
-router.patch("/validate/:id", [authToken, idValidation], userSuccessController.validateSuccess);
+router.patch("/validate/:id", authToken, userSuccessController.validateSuccess);
 
 export default router;
