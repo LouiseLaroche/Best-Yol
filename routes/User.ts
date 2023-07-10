@@ -9,5 +9,6 @@ import userController from "../controllers/User";
 router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.get("/:userId", [authToken, idValidation], userController.getUser);
+router.post("/refreshTokens", userController.refreshAccessToken);
 
 export default router;
