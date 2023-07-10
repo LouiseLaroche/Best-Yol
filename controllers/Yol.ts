@@ -137,9 +137,12 @@ export const evolve = async (req: Request, res: Response) => {
                     data: {
                         speciesId: matchingSpeciesBabyStage?.id,
                     },
+                    include: {
+                        species: true,
+                    },
                 });
 
-                res.json({ message: "Votre Yol a éclos !!" });
+                res.json({ message: "Votre Yol a éclos !", newSpecies: yolBaby.species });
                 break;
 
             case "Baby":
@@ -162,7 +165,7 @@ export const evolve = async (req: Request, res: Response) => {
                     },
                 });
 
-                res.json({ message: "Votre Yol est passé au stade d'adolescent !!" });
+                res.json({ message: "Votre Yol est passé au stade d'adolescent !", newSpecies: yolAdo.species });
                 break;
 
             case "Adolescent":
@@ -185,7 +188,7 @@ export const evolve = async (req: Request, res: Response) => {
                     },
                 });
 
-                res.json({ message: "Votre Yol est passé au stade final !!" });
+                res.json({ message: "Votre Yol est passé au stade final !", newSpecies: yolFinal.species });
                 break;
 
             case "Final":
