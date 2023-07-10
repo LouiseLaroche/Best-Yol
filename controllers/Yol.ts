@@ -155,7 +155,7 @@ export const evolve = async (req: Request, res: Response) => {
                     throw Object.assign(new Error(), {
                         status: 400,
                         details: "Le Yol n'a pas l'xp requise pour évoluer",
-                        XpNeeded: 100,
+                        xpNeeded: 100,
                         xpYol: yolInfo?.xp,
                     });
                 }
@@ -192,7 +192,7 @@ export const evolve = async (req: Request, res: Response) => {
                     throw Object.assign(new Error(), {
                         status: 400,
                         details: "Le Yol n'a pas l'xp requise pour évoluer",
-                        XpNeeded: 700,
+                        xpNeeded: 700,
                         xpYol: yolInfo?.xp,
                     });
                 }
@@ -229,7 +229,7 @@ export const evolve = async (req: Request, res: Response) => {
                     throw Object.assign(new Error(), {
                         status: 400,
                         details: "Le Yol n'a pas l'xp requise pour évoluer",
-                        XpNeeded: 1750,
+                        xpNeeded: 1750,
                         xpYol: yolInfo?.xp,
                     });
                 }
