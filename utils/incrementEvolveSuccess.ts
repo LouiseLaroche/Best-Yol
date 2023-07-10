@@ -1,118 +1,149 @@
 import { prisma } from "./prismaClient";
 
 export async function incrementEvolveSuccess(userId: number, formerStage: string) {
+    const errorSuccess = "Erreur au moment d'incrémenter le succès utilisateur : succès correspondant à l'évolution introuvable";
+    const errorUserSuccess = "Erreur au moment d'incrémenter le succès utilisateur : succès utilisateur correspondant à l'évolution introuvable";
+    const errorAmount = "Erreur au moment d'incrémenter le succès utilisateur : actualAmount ou amountNeeded undefined";
+
     switch (formerStage) {
         case "Egg":
-            try {
-                const matchingEggEvolutionSuccess = await prisma.success.findFirst({
-                    where: {
-                        title: "Sorti de l'oeuf",
-                    },
-                });
+            const matchingEggEvolutionSuccess = await prisma.success.findFirst({
+                where: {
+                    title: "Sorti de l'oeuf",
+                },
+            });
 
-                const matchingEggEvolutionUserSuccess = await prisma.userSuccess.findFirst({
-                    where: {
-                        successId: matchingEggEvolutionSuccess?.id,
-                        userId: userId,
-                    },
+            if (matchingEggEvolutionSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorSuccess,
                 });
+            }
 
-                if (matchingEggEvolutionUserSuccess?.actualAmount !== undefined && matchingEggEvolutionSuccess?.amountNeeded !== undefined) {
-                    if (matchingEggEvolutionUserSuccess.actualAmount < matchingEggEvolutionSuccess.amountNeeded) {
-                        await prisma.userSuccess.update({
-                            where: {
-                                id: matchingEggEvolutionUserSuccess?.id,
+            const matchingEggEvolutionUserSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    successId: matchingEggEvolutionSuccess?.id,
+                    userId: userId,
+                },
+            });
+
+            if (matchingEggEvolutionUserSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorUserSuccess,
+                });
+            }
+
+            if (matchingEggEvolutionUserSuccess?.actualAmount !== undefined && matchingEggEvolutionSuccess?.amountNeeded !== undefined) {
+                if (matchingEggEvolutionUserSuccess.actualAmount < matchingEggEvolutionSuccess.amountNeeded) {
+                    await prisma.userSuccess.update({
+                        where: {
+                            id: matchingEggEvolutionUserSuccess?.id,
+                        },
+                        data: {
+                            actualAmount: {
+                                increment: 1,
                             },
-                            data: {
-                                actualAmount: {
-                                    increment: 1,
-                                },
-                            },
-                        });
-                    }
+                        },
+                    });
                 }
-            } catch (error: any) {
-                return {
-                    message: "Erreur au moment d'incrémenter le succès utilisateur 'Sorti de l'oeuf'",
-                    error,
-                };
+            } else {
+                throw Object.assign(new Error(), {
+                    details: errorAmount,
+                });
             }
             break;
 
         case "Baby":
-            try {
-                const matchingBabyEvolutionSuccess = await prisma.success.findFirst({
-                    where: {
-                        title: "Mini Yol",
-                    },
-                });
+            const matchingBabyEvolutionSuccess = await prisma.success.findFirst({
+                where: {
+                    title: "Mini Yol",
+                },
+            });
 
-                const matchingBabyEvolutionUserSuccess = await prisma.userSuccess.findFirst({
-                    where: {
-                        successId: matchingBabyEvolutionSuccess?.id,
-                        userId: userId,
-                    },
+            if (matchingBabyEvolutionSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorSuccess,
                 });
+            }
 
-                if (matchingBabyEvolutionUserSuccess?.actualAmount !== undefined && matchingBabyEvolutionSuccess?.amountNeeded !== undefined) {
-                    if (matchingBabyEvolutionUserSuccess.actualAmount < matchingBabyEvolutionSuccess.amountNeeded) {
-                        await prisma.userSuccess.update({
-                            where: {
-                                id: matchingBabyEvolutionUserSuccess?.id,
+            const matchingBabyEvolutionUserSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    successId: matchingBabyEvolutionSuccess?.id,
+                    userId: userId,
+                },
+            });
+
+            if (matchingBabyEvolutionUserSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorUserSuccess,
+                });
+            }
+
+            if (matchingBabyEvolutionUserSuccess?.actualAmount !== undefined && matchingBabyEvolutionSuccess?.amountNeeded !== undefined) {
+                if (matchingBabyEvolutionUserSuccess.actualAmount < matchingBabyEvolutionSuccess.amountNeeded) {
+                    await prisma.userSuccess.update({
+                        where: {
+                            id: matchingBabyEvolutionUserSuccess?.id,
+                        },
+                        data: {
+                            actualAmount: {
+                                increment: 1,
                             },
-                            data: {
-                                actualAmount: {
-                                    increment: 1,
-                                },
-                            },
-                        });
-                    }
+                        },
+                    });
                 }
-            } catch (error: any) {
-                return {
-                    message: "Erreur au moment d'incrémenter le succès utilisateur 'Mini Yol'",
-                    error,
-                };
+            } else {
+                throw Object.assign(new Error(), {
+                    details: errorAmount,
+                });
             }
             break;
 
         case "Adolescent":
-            try {
-                const matchingAdoEvolutionSuccess = await prisma.success.findFirst({
-                    where: {
-                        title: "Grand Yol",
-                    },
-                });
+            const matchingAdoEvolutionSuccess = await prisma.success.findFirst({
+                where: {
+                    title: "Grand Yol",
+                },
+            });
 
-                const matchingAdoEvolutionUserSuccess = await prisma.userSuccess.findFirst({
-                    where: {
-                        successId: matchingAdoEvolutionSuccess?.id,
-                        userId: userId,
-                    },
+            if (matchingAdoEvolutionSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorSuccess,
                 });
+            }
 
-                if (matchingAdoEvolutionUserSuccess?.actualAmount !== undefined && matchingAdoEvolutionSuccess?.amountNeeded !== undefined) {
-                    if (matchingAdoEvolutionUserSuccess.actualAmount < matchingAdoEvolutionSuccess.amountNeeded) {
-                        await prisma.userSuccess.update({
-                            where: {
-                                id: matchingAdoEvolutionUserSuccess?.id,
+            const matchingAdoEvolutionUserSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    successId: matchingAdoEvolutionSuccess?.id,
+                    userId: userId,
+                },
+            });
+
+            if (matchingAdoEvolutionUserSuccess === null) {
+                throw Object.assign(new Error(), {
+                    details: errorUserSuccess,
+                });
+            }
+
+            if (matchingAdoEvolutionUserSuccess?.actualAmount !== undefined && matchingAdoEvolutionSuccess?.amountNeeded !== undefined) {
+                if (matchingAdoEvolutionUserSuccess.actualAmount < matchingAdoEvolutionSuccess.amountNeeded) {
+                    await prisma.userSuccess.update({
+                        where: {
+                            id: matchingAdoEvolutionUserSuccess?.id,
+                        },
+                        data: {
+                            actualAmount: {
+                                increment: 1,
                             },
-                            data: {
-                                actualAmount: {
-                                    increment: 1,
-                                },
-                            },
-                        });
-                    }
+                        },
+                    });
                 }
-            } catch (error: any) {
-                return {
-                    message: "Erreur au moment d'incrémenter le succès utilisateur 'Grand Yol'",
-                    error,
-                };
+            } else {
+                throw Object.assign(new Error(), {
+                    details: errorAmount,
+                });
             }
             break;
         default:
-            return { message: "Aucun succès pour ce stade de Yol" };
+            return;
     }
 }

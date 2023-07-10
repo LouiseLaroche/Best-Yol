@@ -103,12 +103,12 @@ export const evolve = async (req: Request, res: Response) => {
     const yolId: string = req.params.yolId;
 
     if (!yolId) {
-        res.status(400).json({ erreur: "yolId est absent des paramètres de la requête" });
+        res.status(400).json({ details: "yolId est absent des paramètres de la requête" });
         return;
     }
 
     if (isNaN(parseInt(yolId, 10))) {
-        res.status(400).json({ erreur: "yolId doit être un nombre valide" });
+        res.status(400).json({ details: "yolId doit être un nombre valide" });
         return;
     }
 
@@ -124,13 +124,17 @@ export const evolve = async (req: Request, res: Response) => {
 
         switch (yolInfo?.species.stage) {
             case "Egg":
-                try {
+                if (yolInfo.xp >= 100) {
                     const matchingSpeciesBabyStage = await prisma.species.findFirst({
                         where: {
                             name: yolInfo?.species.name,
                             stage: "Baby",
                         },
                     });
+
+                    if (matchingSpeciesBabyStage === null) {
+                        throw Object.assign(new Error(), { details: "Espèce de l'évolution introuvable" });
+                    }
 
                     const yolBaby = await prisma.yol.update({
                         where: {
@@ -139,24 +143,35 @@ export const evolve = async (req: Request, res: Response) => {
                         data: {
                             speciesId: matchingSpeciesBabyStage?.id,
                         },
+                        include: {
+                            species: true,
+                        },
                     });
 
-                    const successUpdateResponse = await incrementEvolveSuccess(yolInfo.userId, "Egg");
+                    await incrementEvolveSuccess(yolInfo.userId, "Egg");
 
-                    res.json({ message: "Votre Yol a éclos !", successUpdateResponse });
-                } catch (error: any) {
-                    return res.status(500).json({ erreur: "Espèce introuvable", error });
+                    return res.status(200).json({ message: "Votre Yol a éclos !", newSpecies: yolBaby.species });
+                } else {
+                    throw Object.assign(new Error(), {
+                        status: 400,
+                        details: "Le Yol n'a pas l'xp requise pour évoluer",
+                        XpNeeded: 100,
+                        xpYol: yolInfo?.xp,
+                    });
                 }
-                break;
 
             case "Baby":
-                try {
+                if (yolInfo.xp >= 700) {
                     const matchingSpeciesAdolescentStage = await prisma.species.findFirst({
                         where: {
                             name: yolInfo?.species.name,
                             stage: "Adolescent",
                         },
                     });
+
+                    if (matchingSpeciesAdolescentStage === null) {
+                        throw Object.assign(new Error(), { details: "Espèce de l'évolution introuvable" });
+                    }
 
                     const yolAdo = await prisma.yol.update({
                         where: {
@@ -170,22 +185,30 @@ export const evolve = async (req: Request, res: Response) => {
                         },
                     });
 
-                    const successUpdateResponse = await incrementEvolveSuccess(yolInfo.userId, "Baby");
+                    await incrementEvolveSuccess(yolInfo.userId, "Baby");
 
-                    res.json({ message: "Votre Yol est passé au stade d'adolescent !", successUpdateResponse });
-                } catch (error: any) {
-                    return res.status(500).json({ erreur: "Espèce introuvable", error });
+                    return res.status(200).json({ message: "Votre Yol est passé au stade d'adolescent !", newSpecies: yolAdo.species });
+                } else {
+                    throw Object.assign(new Error(), {
+                        status: 400,
+                        details: "Le Yol n'a pas l'xp requise pour évoluer",
+                        XpNeeded: 700,
+                        xpYol: yolInfo?.xp,
+                    });
                 }
-                break;
 
             case "Adolescent":
-                try {
+                if (yolInfo.xp >= 1750) {
                     const matchingSpeciesFinalStage = await prisma.species.findFirst({
                         where: {
                             name: yolInfo?.species.name,
                             stage: "Final",
                         },
                     });
+
+                    if (matchingSpeciesFinalStage === null) {
+                        throw Object.assign(new Error(), { details: "Espèce de l'évolution introuvable" });
+                    }
 
                     const yolFinal = await prisma.yol.update({
                         where: {
@@ -199,24 +222,29 @@ export const evolve = async (req: Request, res: Response) => {
                         },
                     });
 
-                    const successUpdateResponse = await incrementEvolveSuccess(yolInfo.userId, "Adolescent");
+                    await incrementEvolveSuccess(yolInfo.userId, "Adolescent");
 
-                    res.json({ message: "Votre Yol est passé au stade final !", successUpdateResponse });
-                } catch (error: any) {
-                    return res.status(500).json({ erreur: "Espèce introuvable", error });
+                    return res.status(200).json({ message: "Votre Yol est passé au stade final !", newSpecies: yolFinal.species });
+                } else {
+                    throw Object.assign(new Error(), {
+                        status: 400,
+                        details: "Le Yol n'a pas l'xp requise pour évoluer",
+                        XpNeeded: 1750,
+                        xpYol: yolInfo?.xp,
+                    });
                 }
-                break;
 
             case "Final":
-                res.json({ message: "Votre Yol est au stade final, il ne peut plus évoluer !" });
+                res.status(400).json({ details: "Votre Yol est au stade final, il ne peut plus évoluer !" });
                 break;
 
             default:
-                res.json({ message: "default case" });
+                return;
         }
     } catch (error: any) {
-        console.error("Error:", error);
-        return res.status(500).json({ error: "An internal server error occurred" });
+        console.log(error.message);
+        const { status, ...errorWithoutStatus } = error;
+        return res.status(error.status || 500).json(errorWithoutStatus);
     }
 };
 
