@@ -7,7 +7,6 @@ import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 import { prisma } from "../utils/prismaClient";
 import { generateAccessToken } from "../utils/auth/generateAccessToken";
-import { generateRefreshToken } from "../utils/auth/generateRefreshToken";
 
 //* POST
 export const signup = async (req: Request, res: Response) => {
@@ -49,13 +48,11 @@ export const signup = async (req: Request, res: Response) => {
         await userSuccess.createUserSuccess(user.id);
 
         const accessToken = await generateAccessToken(user.id);
-        const refreshToken = await generateRefreshToken(user.id);
 
         return res.status(201).json({
             user,
             message: "Inscription réussie! 🥳🎊",
             accessToken: accessToken,
-            refreshToken: refreshToken,
         });
     } catch (error: any) {
         console.log(error.message);
@@ -88,7 +85,6 @@ export const login = async (req: Request, res: Response) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         const accessToken = await generateAccessToken(user.id);
-        const refreshToken = await generateRefreshToken(user.id);
 
         if (passwordMatch) {
             const { password: _, ...userWithoutPassword } = user;
@@ -97,7 +93,6 @@ export const login = async (req: Request, res: Response) => {
                 user: userWithoutPassword,
                 message: "Connexion réussie! 🥳",
                 accessToken: accessToken,
-                refreshToken: refreshToken,
             });
         } else {
             return res.status(401).json({ erreur: "Identifiants non valides 😢" });
