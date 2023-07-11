@@ -9,6 +9,7 @@ import { prisma } from "../utils/prismaClient";
 import { generateAccessToken } from "../utils/auth/generateAccessToken";
 import { generateRefreshToken } from "../utils/auth/generateRefreshToken";
 
+//* POST
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
@@ -57,6 +58,7 @@ export const signup = async (req: Request, res: Response) => {
             refreshToken: refreshToken,
         });
     } catch (error: any) {
+        console.log(error.message);
         return res.status(500).json({ erreur: error });
     }
 };
@@ -101,35 +103,8 @@ export const login = async (req: Request, res: Response) => {
             return res.status(401).json({ erreur: "Identifiants non valides 😢" });
         }
     } catch (error: any) {
+        console.log(error.message);
         return res.status(500).json({ erreur: error });
-    }
-};
-
-export const getUser = async (req: AuthenticatedRequest, res: Response) => {
-    const userId: string = req.params.userId;
-
-    if (isNaN(parseInt(userId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
-        return;
-    }
-
-    try {
-        const user = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
-
-        if (user === null) {
-            return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
-        }
-
-        res.status(200).json({
-            id: user.id,
-            pp: user.pp,
-            banner: user.banner,
-            email: user.email,
-            username: user.username,
-            createdAt: user.createdAt,
-        });
-    } catch (error: any) {
-        res.status(500).json({ erreur: error });
     }
 };
 
@@ -154,13 +129,68 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
         const refreshedToken = await generateAccessToken(parseInt(userId, 10));
         res.status(200).send({ accessToken: refreshedToken });
     } catch (error: any) {
+        console.log(error.message);
         return res.status(error.status || 500).json({ erreur: error.message });
+    }
+};
+
+//* GET
+export const getUser = async (req: AuthenticatedRequest, res: Response) => {
+    const userId: string = req.params.userId;
+
+    if (isNaN(parseInt(userId, 10))) {
+        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
+        return;
+    }
+
+    try {
+        const user = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
+
+        if (user === null) {
+            return res.status(404).json({ erreur: "Utilisateur non trouvé 😢" });
+        }
+
+        res.status(200).json({
+            id: user.id,
+            pp: user.pp,
+            banner: user.banner,
+            email: user.email,
+            username: user.username,
+            createdAt: user.createdAt,
+        });
+    } catch (error: any) {
+        console.log(error.message);
+        res.status(500).json({ erreur: error });
+    }
+};
+
+//* PATCH
+export const editUsernameOrEmail = async (req: Request, res: Response) => {
+    const userId: string = req.params.userId;
+    const { username, email } = req.body;
+
+    try {
+        const formerUser = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
+
+        const updatedUser = await prisma.users.update({
+            where: {
+                id: parseInt(userId, 10),
+            },
+            data: {
+                username: username,
+            },
+        });
+
+        return res.json({ message: "Modifier l'username et/ou l'email", formerUser, updatedUser });
+    } catch (error) {
+        return res.json(error);
     }
 };
 
 export default {
     signup,
     login,
-    getUser,
     refreshAccessToken,
+    getUser,
+    editUsernameOrEmail,
 };
