@@ -12,8 +12,10 @@ import { generateRefreshToken } from "../utils/auth/generateRefreshToken";
 export const signup = async (req: Request, res: Response) => {
     const { username, email, password } = req.body;
 
+    const normalizedUsername: string = username.toLowerCase();
+
     try {
-        const existingUsername = await prisma.users.findUnique({ where: { username } });
+        const existingUsername = await prisma.users.findUnique({ where: { username: normalizedUsername } });
         const existingEmail = await prisma.users.findUnique({ where: { email } });
 
         if (existingUsername != null) {
@@ -28,7 +30,7 @@ export const signup = async (req: Request, res: Response) => {
 
         const user = await prisma.users.create({
             data: {
-                username,
+                username: normalizedUsername,
                 email,
                 password: hashedPassword,
                 pp: "/assets/avatars/Icon1.png",
@@ -62,9 +64,11 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
+    const normalizedUsername: string = username.toLowerCase();
+
     try {
         const user = await prisma.users.findUnique({
-            where: { username },
+            where: { username: normalizedUsername },
             select: {
                 id: true,
                 username: true,
