@@ -29,7 +29,8 @@
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.0",
-        "pg": "^8.10.0"
+        "pg": "^8.10.0",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
         "@tsconfig/node16": "^1.0.3",
