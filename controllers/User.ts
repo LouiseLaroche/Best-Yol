@@ -167,17 +167,69 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
     try {
         const formerUser = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
 
+        if (username === formerUser?.username && email === formerUser?.email) {
+            console.log({
+                formerUsername: formerUser?.username,
+                newUsername: username,
+                formerEmail: formerUser?.email,
+                newEmail: email,
+            });
+
+            return res.json({ message: "Les informations de l'utilisateur n'ont pas changé" });
+        }
+
+        if (username === undefined && email === undefined) {
+            console.log({
+                formerUsername: formerUser?.username,
+                newUsername: username,
+                formerEmail: formerUser?.email,
+                newEmail: email,
+            });
+
+            return res.json({ message: "Les nouvelles informations sont undefined" });
+        }
+
+        if (username === formerUser?.username && email === undefined) {
+            console.log({
+                formerUsername: formerUser?.username,
+                newUsername: username,
+                formerEmail: formerUser?.email,
+                newEmail: email,
+            });
+
+            return res.json({ message: "Username est le même et l'email est undefined" });
+        }
+
+        if (email === formerUser?.email && username === undefined) {
+            console.log({
+                formerUsername: formerUser?.username,
+                newUsername: username,
+                formerEmail: formerUser?.email,
+                newEmail: email,
+            });
+
+            return res.json({ message: "L'email est le même et username est undefined" });
+        }
+
         const updatedUser = await prisma.users.update({
             where: {
                 id: parseInt(userId, 10),
             },
             data: {
-                username: username,
+                username: username ? { set: username } : undefined,
+                email: email ? { set: email } : undefined,
             },
         });
 
-        return res.json({ message: "Modifier l'username et/ou l'email", formerUser, updatedUser });
-    } catch (error) {
+        return res.json({
+            message: "Informations de l'utilisateur modifiées avec succès",
+            formerUsername: formerUser?.username,
+            updatedUsername: updatedUser.username,
+            formerEmail: formerUser?.email,
+            updatedEmail: updatedUser.email,
+        });
+    } catch (error: any) {
+        console.log(error.message);
         return res.json(error);
     }
 };
