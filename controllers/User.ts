@@ -168,31 +168,37 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
     try {
         const formerUser = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
 
-        if (username === formerUser?.username && email === formerUser?.email) {
-            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
+        if (normalizedUsername === formerUser?.username && email === formerUser?.email) {
+            throw new Error("Les nouveaux username et email sont identiques aux précédents");
         }
 
-        if (username === undefined && email === undefined) {
-            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
+        if (normalizedUsername === undefined && email === undefined) {
+            throw new Error("L'username et l'email sont undefined");
         }
 
-        if (username === formerUser?.username && email === undefined) {
-            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
+        if (normalizedUsername === formerUser?.username && email === undefined) {
+            throw new Error("Le nouvel username est identique au précédent et l'email est undefined");
         }
 
-        if (email === formerUser?.email && username === undefined) {
-            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
+        if (email === formerUser?.email && normalizedUsername === undefined) {
+            throw new Error("Le nouvel email est identique au précédent et l'username est undefined");
         }
 
-        const existingUsername = await prisma.users.findUnique({ where: { username: normalizedUsername } });
-        const existingEmail = await prisma.users.findUnique({ where: { email } });
+        if (normalizedUsername !== undefined) {
+            const existingUsername = await prisma.users.findUnique({ where: { username: normalizedUsername } });
 
-        if (existingUsername !== null) {
-            return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
+            if (existingUsername !== null && existingUsername.username !== formerUser?.username) {
+                return res.status(400).json({ details: "Le nom d'utilisateur existe déjà" });
+            }
         }
 
-        if (existingEmail !== null) {
-            return res.status(400).json({ erreur: "L'email existe déjà" });
+        if (email !== undefined) {
+            const existingEmail = await prisma.users.findUnique({ where: { email } });
+
+            if (existingEmail !== null && existingEmail.email !== formerUser?.email) {
+                console.log(formerUser?.email);
+                return res.status(400).json({ details: "L'email existe déjà" });
+            }
         }
 
         await prisma.users.update({
@@ -200,7 +206,7 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
                 id: parseInt(userId, 10),
             },
             data: {
-                username: username ? { set: username } : undefined,
+                username: normalizedUsername ? { set: normalizedUsername } : undefined,
                 email: email ? { set: email } : undefined,
             },
         });
@@ -208,7 +214,7 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
         return res.json({ message: "Informations de l'utilisateur modifiées avec succès" });
     } catch (error: any) {
         console.log(error.message);
-        return res.json(error);
+        return res.status(400).json({ details: "Les informations de l'utilisateur n'ont pas été modifiées. Plus d'informations en console" });
     }
 };
 
