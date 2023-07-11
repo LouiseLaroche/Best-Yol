@@ -163,55 +163,39 @@ export const getUser = async (req: AuthenticatedRequest, res: Response) => {
 export const editUsernameOrEmail = async (req: Request, res: Response) => {
     const userId: string = req.params.userId;
     const { username, email } = req.body;
+    const normalizedUsername: string = username.toLowerCase();
 
     try {
         const formerUser = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
 
         if (username === formerUser?.username && email === formerUser?.email) {
-            console.log({
-                formerUsername: formerUser?.username,
-                newUsername: username,
-                formerEmail: formerUser?.email,
-                newEmail: email,
-            });
-
-            return res.json({ message: "Les informations de l'utilisateur n'ont pas changé" });
+            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
         }
 
         if (username === undefined && email === undefined) {
-            console.log({
-                formerUsername: formerUser?.username,
-                newUsername: username,
-                formerEmail: formerUser?.email,
-                newEmail: email,
-            });
-
-            return res.json({ message: "Les nouvelles informations sont undefined" });
+            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
         }
 
         if (username === formerUser?.username && email === undefined) {
-            console.log({
-                formerUsername: formerUser?.username,
-                newUsername: username,
-                formerEmail: formerUser?.email,
-                newEmail: email,
-            });
-
-            return res.json({ message: "Username est le même et l'email est undefined" });
+            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
         }
 
         if (email === formerUser?.email && username === undefined) {
-            console.log({
-                formerUsername: formerUser?.username,
-                newUsername: username,
-                formerEmail: formerUser?.email,
-                newEmail: email,
-            });
-
-            return res.json({ message: "L'email est le même et username est undefined" });
+            return res.status(400).json({ message: "Aucun changement d'username ou d'email effectué" });
         }
 
-        const updatedUser = await prisma.users.update({
+        const existingUsername = await prisma.users.findUnique({ where: { username: normalizedUsername } });
+        const existingEmail = await prisma.users.findUnique({ where: { email } });
+
+        if (existingUsername !== null) {
+            return res.status(400).json({ erreur: "Le nom d'utilisateur existe déjà" });
+        }
+
+        if (existingEmail !== null) {
+            return res.status(400).json({ erreur: "L'email existe déjà" });
+        }
+
+        await prisma.users.update({
             where: {
                 id: parseInt(userId, 10),
             },
@@ -221,17 +205,15 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
             },
         });
 
-        return res.json({
-            message: "Informations de l'utilisateur modifiées avec succès",
-            formerUsername: formerUser?.username,
-            updatedUsername: updatedUser.username,
-            formerEmail: formerUser?.email,
-            updatedEmail: updatedUser.email,
-        });
+        return res.json({ message: "Informations de l'utilisateur modifiées avec succès" });
     } catch (error: any) {
         console.log(error.message);
         return res.json(error);
     }
+};
+
+export const editPassword = async (req: Request, res: Response) => {
+    return res.json("Modifier le mot de passe");
 };
 
 export default {
@@ -240,4 +222,5 @@ export default {
     refreshAccessToken,
     getUser,
     editUsernameOrEmail,
+    editPassword,
 };

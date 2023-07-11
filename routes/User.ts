@@ -18,5 +18,6 @@ router.get("/:userId", [authToken, idValidation], userController.getUser);
 
 //* PATCH
 router.patch("/edit/username_email/:userId", [authToken, idValidation, validateSchema(EditUsernameEmailSchema)], userController.editUsernameOrEmail);
+router.patch("/edit/password/:userId", [authToken, idValidation], userController.editPassword);
 
 export default router;

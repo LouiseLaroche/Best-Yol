@@ -10,7 +10,7 @@ const passwordError = "Le mot de passe doit contenir au minimum 8 caractères, u
 
 export const SignUpSchema = z.object({
     body: z.object({
-        username: z.string().min(3, { message: usernameMinError }).max(30, { message: usernameMaxError }),
+        username: z.string().min(3, { message: usernameMinError }).max(20, { message: usernameMaxError }),
         email: z.string().email({ message: emailError }),
         password: z.string().regex(passwordRegex, {
             message: passwordError,
@@ -20,7 +20,7 @@ export const SignUpSchema = z.object({
 
 export const LoginSchema = z.object({
     body: z.object({
-        username: z.string().min(3, { message: usernameMinError }).max(30, { message: usernameMaxError }),
+        username: z.string().min(3, { message: usernameMinError }).max(20, { message: usernameMaxError }),
         password: z.string().regex(passwordRegex, {
             message: passwordError,
         }),
@@ -29,7 +29,7 @@ export const LoginSchema = z.object({
 
 export const EditUsernameEmailSchema = z.object({
     body: z.object({
-        username: z.string().min(3, { message: usernameMinError }).max(30, { message: usernameMaxError }).optional(),
+        username: z.string().min(3, { message: usernameMinError }).max(20, { message: usernameMaxError }).optional(),
         email: z.string().email({ message: emailError }).optional(),
     }),
 });
