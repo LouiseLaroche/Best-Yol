@@ -8,7 +8,8 @@ export const validateSchema = (schema: any) => (req: Request, res: Response, nex
 
         next();
     } catch (err: any) {
-        return res.status(400).send(err.issues[0].message);
+        console.log(err.errors);
+        return res.status(400).json(err.issues[0].message);
     }
 };
 
