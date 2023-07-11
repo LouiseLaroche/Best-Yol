@@ -33,3 +33,11 @@ export const EditUsernameEmailSchema = z.object({
         email: z.string().email({ message: emailError }).optional(),
     }),
 });
+
+export const EditUserPassword = z.object({
+    body: z.object({
+        newPassword: z.string().regex(passwordRegex, {
+            message: passwordError,
+        }),
+    }),
+});

@@ -219,7 +219,53 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
 };
 
 export const editPassword = async (req: Request, res: Response) => {
-    return res.json("Modifier le mot de passe");
+    const userId: string = req.params.userId;
+    const { formerPassword, newPassword } = req.body;
+
+    try {
+        if (formerPassword === undefined) {
+            throw Object.assign(new Error(), {
+                status: 400,
+                details: "Ancien mot de passe absent de la requête",
+            });
+        }
+
+        const user = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
+
+        if (user === null) {
+            return res.status(401).json({ erreur: "Utilisateur introuvable" });
+        }
+
+        const passwordMatch = await bcrypt.compare(formerPassword, user.password);
+
+        if (passwordMatch) {
+            if (formerPassword === newPassword) {
+                throw new Error("Le nouveau mot de passe est identique au précédent");
+            }
+
+            const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+            await prisma.users.update({
+                where: {
+                    id: parseInt(userId, 10),
+                },
+                data: {
+                    password: hashedNewPassword,
+                },
+            });
+
+            return res.status(200).json({ message: "Mot de passe modifié avec succès" });
+        } else {
+            throw Object.assign(new Error(), {
+                status: 401,
+                details: "Mot de passe incorrect",
+            });
+        }
+    } catch (error: any) {
+        console.log(error.message);
+        const { status, ...errorWithoutStatus } = error;
+        return res.status(error.status || 500).json(errorWithoutStatus);
+    }
 };
 
 export default {
