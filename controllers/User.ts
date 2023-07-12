@@ -308,6 +308,42 @@ export const editPicture = async (req: Request, res: Response) => {
     }
 };
 
+//* DELETE
+export const deleteUser = async (req: Request, res: Response) => {
+    const userId: string = req.params.userId;
+
+    try {
+        await prisma.userSuccess.deleteMany({
+            where: {
+                userId: parseInt(userId, 10),
+            },
+        });
+
+        await prisma.userTasks.deleteMany({
+            where: {
+                userId: parseInt(userId, 10),
+            },
+        });
+
+        await prisma.yol.deleteMany({
+            where: {
+                userId: parseInt(userId, 10),
+            },
+        });
+
+        await prisma.users.delete({
+            where: {
+                id: parseInt(userId, 10),
+            },
+        });
+
+        return res.status(200).json({ message: "L'utilisateur a bien été supprimé" });
+    } catch (error: any) {
+        console.log(error.message);
+        return res.status(500).json({ details: "Une erreur est survenue lors de la suppression de l'utilisateur, plus d'informations en console" });
+    }
+};
+
 export default {
     signup,
     login,
@@ -316,4 +352,5 @@ export default {
     editUsernameOrEmail,
     editPassword,
     editPicture,
+    deleteUser,
 };

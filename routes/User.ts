@@ -21,4 +21,7 @@ router.patch("/edit/username_email/:userId", [authToken, idValidation, validateS
 router.patch("/edit/password/:userId", [authToken, idValidation, validateSchema(EditUserPassword)], userController.editPassword);
 router.patch("/edit/picture/:userId", [authToken, idValidation, validateSchema(EditUserPicture)], userController.editPicture);
 
+//* DELETE
+router.delete("/delete/:userId", [authToken, idValidation], userController.deleteUser);
+
 export default router;
