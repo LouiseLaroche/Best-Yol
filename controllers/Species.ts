@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { prisma, Species } from "../utils/prismaClient";
 
+//* GET
 export const getAllSpecies = async (_req: Request, res: Response) => {
     try {
         const species: Species[] = await prisma.species.findMany();

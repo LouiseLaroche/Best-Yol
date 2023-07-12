@@ -7,6 +7,7 @@ import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 import { prisma } from "../utils/prismaClient";
 import { generateAccessToken } from "../utils/auth/generateAccessToken";
+import { createUserSuccess } from "../utils/createUserSuccess";
 
 //* POST
 export const signup = async (req: Request, res: Response) => {
@@ -45,7 +46,7 @@ export const signup = async (req: Request, res: Response) => {
             },
         });
 
-        await userSuccess.createUserSuccess(user.id);
+        await createUserSuccess(user.id);
 
         const accessToken = await generateAccessToken(user.id);
 

@@ -2,29 +2,7 @@ import { Request, Response } from "express";
 
 import { prisma } from "../utils/prismaClient";
 
-export const createUserSuccess = async (userId: number) => {
-    try {
-        const allSuccess = await prisma.success.findMany();
-
-        for (const success of allSuccess) {
-            try {
-                await prisma.userSuccess.create({
-                    data: {
-                        actualAmount: 0,
-                        isCompleted: false,
-                        userId: userId,
-                        successId: success.id,
-                    },
-                });
-            } catch (error: any) {
-                console.log("error create:", error);
-            }
-        }
-    } catch (error: any) {
-        console.log("error findMany:", error);
-    }
-};
-
+//* GET
 export const getAllUserSuccessByUserId = async (req: Request, res: Response) => {
     const userId: string = req.params.userId;
 
@@ -57,6 +35,7 @@ export const getAllUserSuccessByUserId = async (req: Request, res: Response) => 
     }
 };
 
+//* PATCH
 export const validateSuccess = async (req: Request, res: Response) => {
     const userSuccessId: string = req.params.id;
     const yolId: number = req.body.yolId;
@@ -121,7 +100,6 @@ export const validateSuccess = async (req: Request, res: Response) => {
 };
 
 export default {
-    createUserSuccess,
     getAllUserSuccessByUserId,
     validateSuccess,
 };
