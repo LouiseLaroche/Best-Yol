@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const usernameMinError = "Le nom d'utilisateur doit contenir au moins 3 caractères";
-const usernameMaxError = "Le nom d'utilisateur ne doit pas dépasser 30 caractères";
+const usernameMaxError = "Le nom d'utilisateur ne doit pas dépasser 20 caractères";
 
 const emailError = "L'email doit avoir un format valide";
 
@@ -39,5 +39,11 @@ export const EditUserPassword = z.object({
         newPassword: z.string().regex(passwordRegex, {
             message: passwordError,
         }),
+    }),
+});
+
+export const EditUserPicture = z.object({
+    body: z.object({
+        pictureNumber: z.number(),
     }),
 });

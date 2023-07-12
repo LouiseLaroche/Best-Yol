@@ -89,12 +89,12 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
         });
 
         if (yol.length === 0) {
-            return res.status(404).json({ message: "Cet utilisateur ne possède pas de Yol !" });
+            return res.status(200).json({ message: "Cet utilisateur ne possède pas de Yol !" });
         }
 
         return res.status(200).json(yol[0]);
     } catch (error: any) {
-        return res.status(404).json({ erreur: error });
+        return res.status(500).json({ erreur: error });
     }
 };
 
