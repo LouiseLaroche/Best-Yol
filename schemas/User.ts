@@ -41,3 +41,9 @@ export const EditUserPassword = z.object({
         }),
     }),
 });
+
+export const EditUserPicture = z.object({
+    body: z.object({
+        pictureNumber: z.number(),
+    }),
+});

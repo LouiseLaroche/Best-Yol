@@ -201,7 +201,7 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
             }
         }
 
-        await prisma.users.update({
+        const updatedUser = await prisma.users.update({
             where: {
                 id: parseInt(userId, 10),
             },
@@ -209,9 +209,14 @@ export const editUsernameOrEmail = async (req: Request, res: Response) => {
                 username: normalizedUsername ? { set: normalizedUsername } : undefined,
                 email: email ? { set: email } : undefined,
             },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+            },
         });
 
-        return res.json({ message: "Informations de l'utilisateur modifiées avec succès" });
+        return res.json({ message: "Informations de l'utilisateur modifiées avec succès", updatedUser });
     } catch (error: any) {
         console.log(error.message);
         return res.status(400).json({ details: "Les informations de l'utilisateur n'ont pas été modifiées. Plus d'informations en console" });
@@ -268,6 +273,41 @@ export const editPassword = async (req: Request, res: Response) => {
     }
 };
 
+export const editPicture = async (req: Request, res: Response) => {
+    const userId: string = req.params.userId;
+    const pictureNumber = req.body.pictureNumber;
+
+    try {
+        if (pictureNumber < 1 || pictureNumber > 48) {
+            throw Object.assign(new Error(), {
+                status: 400,
+                details: "L'image n'existe pas",
+            });
+        }
+
+        const newPicture = `/assets/avatars/Icon${req.body.pictureNumber}.png`;
+
+        const updatedUser = await prisma.users.update({
+            where: {
+                id: parseInt(userId, 10),
+            },
+            data: {
+                pp: newPicture,
+            },
+            select: {
+                id: true,
+                pp: true,
+            },
+        });
+
+        return res.json({ message: "L'image de profil a bien été modifiée !", updatedUser });
+    } catch (error: any) {
+        console.log(error.message);
+        const { status, ...errorWithoutStatus } = error;
+        return res.status(error.status || 500).json(errorWithoutStatus);
+    }
+};
+
 export default {
     signup,
     login,
@@ -275,4 +315,5 @@ export default {
     getUser,
     editUsernameOrEmail,
     editPassword,
+    editPicture,
 };
