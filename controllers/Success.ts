@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { prisma, Success } from "../utils/prismaClient";
 
+//* GET
 export const getAllSuccess = async (_req: Request, res: Response) => {
     try {
         const success: Success[] = await prisma.success.findMany();

@@ -7,6 +7,7 @@ import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 import { prisma } from "../utils/prismaClient";
 import { generateAccessToken } from "../utils/auth/generateAccessToken";
+import { createUserSuccess } from "../utils/createUserSuccess";
 
 //* POST
 export const signup = async (req: Request, res: Response) => {
@@ -45,7 +46,7 @@ export const signup = async (req: Request, res: Response) => {
             },
         });
 
-        await userSuccess.createUserSuccess(user.id);
+        await createUserSuccess(user.id);
 
         const accessToken = await generateAccessToken(user.id);
 
@@ -311,36 +312,62 @@ export const editPicture = async (req: Request, res: Response) => {
 //* DELETE
 export const deleteUser = async (req: Request, res: Response) => {
     const userId: string = req.params.userId;
+    const { password } = req.body;
 
     try {
-        await prisma.userSuccess.deleteMany({
-            where: {
-                userId: parseInt(userId, 10),
-            },
-        });
+        if (password === undefined) {
+            throw Object.assign(new Error(), {
+                status: 400,
+                details: "Mot de passe requis",
+            });
+        }
 
-        await prisma.userTasks.deleteMany({
-            where: {
-                userId: parseInt(userId, 10),
-            },
-        });
+        const user = await prisma.users.findUnique({ where: { id: parseInt(userId, 10) } });
 
-        await prisma.yol.deleteMany({
-            where: {
-                userId: parseInt(userId, 10),
-            },
-        });
+        if (user === null) {
+            throw Object.assign(new Error(), {
+                status: 401,
+                details: "Utilisateur introuvable",
+            });
+        }
 
-        await prisma.users.delete({
-            where: {
-                id: parseInt(userId, 10),
-            },
-        });
+        const passwordMatch = await bcrypt.compare(password, user.password);
 
-        return res.status(200).json({ message: "L'utilisateur a bien été supprimé" });
+        if (passwordMatch) {
+            await prisma.userSuccess.deleteMany({
+                where: {
+                    userId: parseInt(userId, 10),
+                },
+            });
+
+            await prisma.userTasks.deleteMany({
+                where: {
+                    userId: parseInt(userId, 10),
+                },
+            });
+
+            await prisma.yol.deleteMany({
+                where: {
+                    userId: parseInt(userId, 10),
+                },
+            });
+
+            await prisma.users.delete({
+                where: {
+                    id: parseInt(userId, 10),
+                },
+            });
+
+            return res.status(200).json({ message: "L'utilisateur a bien été supprimé" });
+        } else {
+            throw Object.assign(new Error(), {
+                status: 401,
+                details: "Mot de passe incorrect",
+            });
+        }
     } catch (error: any) {
         console.log(error.message);
-        return res.status(500).json({ details: "Une erreur est survenue lors de la suppression de l'utilisateur, plus d'informations en console" });
+        return res.status(error.status || 500).json({ details: error.details });
     }
 };
 

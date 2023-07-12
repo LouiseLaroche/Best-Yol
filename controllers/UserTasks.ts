@@ -5,6 +5,7 @@ import { AuthenticatedRequest } from "../middlewares/idValidation";
 
 import { prisma, DailyTasks, UserTasks } from "../utils/prismaClient";
 
+//* POST
 export const createUserCustomTask = async (req: AuthenticatedRequest, res: Response) => {
     const userId: string = req.params.userId;
     const { title }: { title: string } = req.body;
@@ -33,57 +34,6 @@ export const createUserCustomTask = async (req: AuthenticatedRequest, res: Respo
         return res.status(201).json({ userTask, message: "Tâche créée 🥳🎉" });
     } catch (error: any) {
         return res.status(500).json({ erreur: "Erreur lors de la création de la tâche 😕", error });
-    }
-};
-
-export const changeTitleCustomTask = async (req: Request, res: Response) => {
-    const taskId: string = req.params.taskId;
-    const { title }: { title: string } = req.body;
-
-    if (isNaN(parseInt(taskId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
-        return;
-    }
-
-    if (!title) {
-        res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
-        return;
-    }
-
-    try {
-        const updatedTask = await prisma.userTasks.update({
-            where: {
-                id: parseInt(taskId, 10),
-            },
-            data: {
-                title: title,
-            },
-        });
-
-        res.status(200).json({ updatedTask, message: "Tâche modifiée 🥳🎉" });
-    } catch (error: any) {
-        res.status(500).json({ erreur: "Erreur lors du changement de titre 😕", error });
-    }
-};
-
-export const deleteCustomTask = async (req: Request, res: Response) => {
-    const taskId: string = req.params.taskId;
-
-    if (isNaN(parseInt(taskId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
-        return;
-    }
-
-    try {
-        await prisma.userTasks.delete({
-            where: {
-                id: parseInt(taskId, 10),
-            },
-        });
-
-        res.status(200).json({ message: "Tâche supprimée 🔫" });
-    } catch (error: any) {
-        res.status(500).json({ erreur: "Erreur lors de la suppression de la tâche 😕", error });
     }
 };
 
@@ -183,6 +133,76 @@ export const createUserDailyTasks = async (req: AuthenticatedRequest, res: Respo
         res.status(200).json({ userTasks, message: "Tâches quotidiennes assignées 🥳🎉" });
     } catch (error: any) {
         res.status(500).json({ erreur: error });
+    }
+};
+
+//* GET
+export const getUserTasks = async (req: AuthenticatedRequest, res: Response) => {
+    const userId: string = req.params.userId;
+
+    if (isNaN(parseInt(userId, 10))) {
+        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
+        return;
+    }
+
+    try {
+        const userTasks: UserTasks[] = await prisma.userTasks.findMany({
+            where: {
+                userId: parseInt(userId, 10),
+            },
+            include: {
+                dailyTask: true,
+            },
+        });
+
+        const customTasks: UserTasks[] = [];
+        const dailyTasks: UserTasks[] = [];
+
+        userTasks.forEach((task: UserTasks) => {
+            if (task.isDaily) {
+                dailyTasks.push(task);
+            } else {
+                customTasks.push(task);
+            }
+        });
+
+        res.status(200).json({ customTasks, dailyTasks });
+    } catch (error: any) {
+        res.status(500).json({
+            erreur: "Une erreur est survenue lors de la récupération des tâches de l'utilisateur 😕",
+            error,
+        });
+    }
+};
+
+//* PATCH
+export const changeTitleCustomTask = async (req: Request, res: Response) => {
+    const taskId: string = req.params.taskId;
+    const { title }: { title: string } = req.body;
+
+    if (isNaN(parseInt(taskId, 10))) {
+        res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
+        return;
+    }
+
+    if (!title) {
+        res.status(400).json({ erreur: "le titre de la tâche est absent du corps de la requête" });
+        return;
+    }
+
+    try {
+        const updatedTask = await prisma.userTasks.update({
+            where: {
+                id: parseInt(taskId, 10),
+            },
+            data: {
+                title: title,
+            },
+        });
+
+        res.status(200).json({ updatedTask, message: "Tâche modifiée 🥳🎉" });
+    } catch (error: any) {
+        res.status(500).json({ erreur: "Erreur lors du changement de titre 😕", error });
     }
 };
 
@@ -352,58 +372,38 @@ export const validateCustomTask = async (req: Request, res: Response) => {
     }
 };
 
-export const removeActiveDaily = async (req: Request, res: Response) => {
-    try {
-        await prisma.dailyTasks.updateMany({
-            where: {
-                isActive: true,
-            },
-            data: {
-                isActive: false,
-            },
-        });
-    } catch (error: any) {
-        return res.status(400).json({ erreur: error });
-    }
+//* DELETE
+export const deleteCustomTask = async (req: Request, res: Response) => {
+    const taskId: string = req.params.taskId;
 
-    return res.status(200).json({ message: "Les tâches quotidiennes actives ont bien été désactivée 🥳🎉" });
-};
-
-export const getUserTasks = async (req: AuthenticatedRequest, res: Response) => {
-    const userId: string = req.params.userId;
-
-    if (isNaN(parseInt(userId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre userId doit être un nombre valide" });
+    if (isNaN(parseInt(taskId, 10))) {
+        res.status(400).json({ erreur: "Le paramètre taskId doit être un nombre valide" });
         return;
     }
 
     try {
-        const userTasks: UserTasks[] = await prisma.userTasks.findMany({
+        const task = await prisma.userTasks.findUnique({
             where: {
-                userId: parseInt(userId, 10),
-            },
-            include: {
-                dailyTask: true,
+                id: parseInt(taskId, 10),
             },
         });
 
-        const customTasks: UserTasks[] = [];
-        const dailyTasks: UserTasks[] = [];
+        if (task?.isDaily === true) {
+            throw Object.assign(new Error(), {
+                status: 401,
+                details: "La tâche utilisateur est une tâche quotidienne et ne peut pas être supprimée de cette manière",
+            });
+        }
 
-        userTasks.forEach((task: UserTasks) => {
-            if (task.isDaily) {
-                dailyTasks.push(task);
-            } else {
-                customTasks.push(task);
-            }
+        await prisma.userTasks.delete({
+            where: {
+                id: parseInt(taskId, 10),
+            },
         });
 
-        res.status(200).json({ customTasks, dailyTasks });
+        res.status(200).json({ message: "Tâche supprimée 🔫", task });
     } catch (error: any) {
-        res.status(500).json({
-            erreur: "Une erreur est survenue lors de la récupération des tâches de l'utilisateur 😕",
-            error,
-        });
+        res.status(500).json({ erreur: "Erreur lors de la suppression de la tâche 😕", error });
     }
 };
 
@@ -413,7 +413,6 @@ export default {
     getUserTasks,
     changeTitleCustomTask,
     deleteCustomTask,
-    removeActiveDaily,
     validateDailyTask,
     validateCustomTask,
 };
