@@ -6,18 +6,12 @@
 
 ## Requirements
 
--   [pnpm installed](https://pnpm.io/installation)
-
-    if you have node and npm already installed:
-
-    `npm install -g pnpm`
-
--   [node.js installed](https://nodejs.org/en/download/package-manager)
+-   [node.js installed with npm](https://nodejs.org/en/download/package-manager)
 
 ## Installation
 
 ```bash
-pnpm i
+npm i
 ```
 
 ## Usage
@@ -25,17 +19,17 @@ pnpm i
 dev env:
 
 ```bash
-pnpm run dev
+npm run dev
 ```
 
 build:
 
 ```bash
-pnpm build
+npm run build
 ```
 
 prod:
 
 ```bash
-pnpm start
+npm run start
 ```
