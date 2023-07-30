@@ -210,19 +210,20 @@ export const validateDailyTask = async (req: Request, res: Response) => {
     const userTaskId: string = req.params.userTaskId;
     const { yolId }: { yolId: number } = req.body;
 
+    const today = new Date();
+    const startOfToday = startOfDay(today);
+    const endOfToday = endOfDay(today);
+
     if (isNaN(yolId)) {
-        res.status(400).json({ erreur: "yolId doit être un nombre valide" });
-        return;
+        return res.status(400).json({ erreur: "yolId doit être un nombre valide" });
     }
 
     if (isNaN(parseInt(userTaskId, 10))) {
-        res.status(400).json({ erreur: "Le paramètre userTaskId doit être un nombre valide" });
-        return;
+        return res.status(400).json({ erreur: "Le paramètre userTaskId doit être un nombre valide" });
     }
 
     if (!yolId) {
-        res.status(400).json({ erreur: "yolId est absent du corps de la requête" });
-        return;
+        return res.status(400).json({ erreur: "yolId est absent du corps de la requête" });
     }
 
     try {
@@ -254,7 +255,7 @@ export const validateDailyTask = async (req: Request, res: Response) => {
         const userId = userTask?.userId;
 
         if (successId !== null) {
-            const userSuccess = await prisma.userSuccess.findFirst({
+            const userSuccessToIncrement = await prisma.userSuccess.findFirst({
                 where: {
                     successId: successId as number,
                     isCompleted: false,
@@ -262,10 +263,30 @@ export const validateDailyTask = async (req: Request, res: Response) => {
                 },
             });
 
-            if (userSuccess) {
+            if (userSuccessToIncrement) {
                 await prisma.userSuccess.update({
                     where: {
-                        id: userSuccess.id,
+                        id: userSuccessToIncrement.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
+
+            const questMasterSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    userId: userId,
+                    successId: 14,
+                },
+            });
+
+            if (questMasterSuccess) {
+                await prisma.userSuccess.update({
+                    where: {
+                        id: questMasterSuccess.id,
                     },
                     data: {
                         actualAmount: {
@@ -282,8 +303,43 @@ export const validateDailyTask = async (req: Request, res: Response) => {
             },
             data: {
                 isCompleted: true,
+                completedAt: new Date(),
             },
         });
+
+        const searchForEveryDaily = await prisma.userTasks.findMany({
+            where: {
+                userId: userId,
+                isDaily: true,
+                createdAt: {
+                    gte: startOfToday,
+                    lte: endOfToday,
+                },
+                isCompleted: true,
+            },
+        });
+
+        if (searchForEveryDaily.length === 6) {
+            const userSuccessToUpdate = await prisma.userSuccess.findFirst({
+                where: {
+                    userId: userId,
+                    successId: 16,
+                },
+            });
+
+            if (userSuccessToUpdate) {
+                await prisma.userSuccess.update({
+                    where: {
+                        id: userSuccessToUpdate.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
+        }
 
         return res.status(200).json({ message: "Tâche validée 🥳🎉", yolXpGain: userTask?.dailyTask?.xp, updatedTask });
     } catch (error: any) {
