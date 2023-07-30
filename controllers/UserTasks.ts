@@ -254,7 +254,7 @@ export const validateDailyTask = async (req: Request, res: Response) => {
         const userId = userTask?.userId;
 
         if (successId !== null) {
-            const userSuccess = await prisma.userSuccess.findFirst({
+            const userSuccessToIncrement = await prisma.userSuccess.findFirst({
                 where: {
                     successId: successId as number,
                     isCompleted: false,
@@ -262,10 +262,30 @@ export const validateDailyTask = async (req: Request, res: Response) => {
                 },
             });
 
-            if (userSuccess) {
+            if (userSuccessToIncrement) {
                 await prisma.userSuccess.update({
                     where: {
-                        id: userSuccess.id,
+                        id: userSuccessToIncrement.id,
+                    },
+                    data: {
+                        actualAmount: {
+                            increment: 1,
+                        },
+                    },
+                });
+            }
+
+            const questMasterSuccess = await prisma.userSuccess.findFirst({
+                where: {
+                    userId: userId,
+                    successId: 14,
+                },
+            });
+
+            if (questMasterSuccess) {
+                await prisma.userSuccess.update({
+                    where: {
+                        id: questMasterSuccess.id,
                     },
                     data: {
                         actualAmount: {
