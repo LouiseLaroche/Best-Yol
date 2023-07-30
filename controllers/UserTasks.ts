@@ -318,7 +318,6 @@ export const validateDailyTask = async (req: Request, res: Response) => {
                 isCompleted: true,
             },
         });
-        console.log(searchForEveryDaily);
 
         if (searchForEveryDaily.length === 6) {
             const userSuccessToUpdate = await prisma.userSuccess.findFirst({
