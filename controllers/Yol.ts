@@ -103,7 +103,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                 },
             });
 
-            if (yolLevelThreeUserSuccess && yolLevelThreeUserSuccess.isCompleted === false) {
+            if (yolLevelThreeUserSuccess && !yolLevelThreeUserSuccess.isCompleted) {
                 await prisma.userSuccess.update({
                     where: {
                         id: yolLevelThreeUserSuccess.id,
@@ -112,6 +112,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                         actualAmount: {
                             increment: 1,
                         },
+                        isCompleted: true,
                     },
                 });
             }
@@ -125,7 +126,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                 },
             });
 
-            if (yolLevelTenUserSuccess && yolLevelTenUserSuccess.isCompleted === false) {
+            if (yolLevelTenUserSuccess && !yolLevelTenUserSuccess.isCompleted) {
                 await prisma.userSuccess.update({
                     where: {
                         id: yolLevelTenUserSuccess.id,
@@ -134,6 +135,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                         actualAmount: {
                             increment: 1,
                         },
+                        isCompleted: true,
                     },
                 });
             }
@@ -147,7 +149,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                 },
             });
 
-            if (yolLevelTwentyUserSuccess && yolLevelTwentyUserSuccess.isCompleted === false) {
+            if (yolLevelTwentyUserSuccess && !yolLevelTwentyUserSuccess.isCompleted) {
                 await prisma.userSuccess.update({
                     where: {
                         id: yolLevelTwentyUserSuccess.id,
@@ -156,6 +158,7 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                         actualAmount: {
                             increment: 1,
                         },
+                        isCompleted: true,
                     },
                 });
             }
