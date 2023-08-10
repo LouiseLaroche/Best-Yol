@@ -96,17 +96,17 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
         }
 
         if (yol[0].xp >= xpToReachLevelThree) {
-            const yolLevelThree = await prisma.userSuccess.findFirst({
+            const yolLevelThreeUserSuccess = await prisma.userSuccess.findFirst({
                 where: {
                     userId: parseInt(userId, 10),
                     successId: 17,
                 },
             });
 
-            if (yolLevelThree) {
+            if (yolLevelThreeUserSuccess && yolLevelThreeUserSuccess.isCompleted === false) {
                 await prisma.userSuccess.update({
                     where: {
-                        id: yolLevelThree.id,
+                        id: yolLevelThreeUserSuccess.id,
                     },
                     data: {
                         actualAmount: {
@@ -115,18 +115,20 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                     },
                 });
             }
-        } else if (yol[0].xp >= xpToReachLevelTen) {
-            const yolLevelTen = await prisma.userSuccess.findFirst({
+        }
+
+        if (yol[0].xp >= xpToReachLevelTen) {
+            const yolLevelTenUserSuccess = await prisma.userSuccess.findFirst({
                 where: {
                     userId: parseInt(userId, 10),
                     successId: 18,
                 },
             });
 
-            if (yolLevelTen) {
+            if (yolLevelTenUserSuccess && yolLevelTenUserSuccess.isCompleted === false) {
                 await prisma.userSuccess.update({
                     where: {
-                        id: yolLevelTen.id,
+                        id: yolLevelTenUserSuccess.id,
                     },
                     data: {
                         actualAmount: {
@@ -135,18 +137,20 @@ export const getOneYolByUserId = async (req: Request, res: Response) => {
                     },
                 });
             }
-        } else if (yol[0].xp >= xpToReachLevelTwenty) {
-            const yolLevelTwenty = await prisma.userSuccess.findFirst({
+        }
+
+        if (yol[0].xp >= xpToReachLevelTwenty) {
+            const yolLevelTwentyUserSuccess = await prisma.userSuccess.findFirst({
                 where: {
                     userId: parseInt(userId, 10),
                     successId: 19,
                 },
             });
 
-            if (yolLevelTwenty) {
+            if (yolLevelTwentyUserSuccess && yolLevelTwentyUserSuccess.isCompleted === false) {
                 await prisma.userSuccess.update({
                     where: {
-                        id: yolLevelTwenty.id,
+                        id: yolLevelTwentyUserSuccess.id,
                     },
                     data: {
                         actualAmount: {
